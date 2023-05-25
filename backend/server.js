@@ -1,17 +1,20 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import multer from 'multer'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import bodyParser from 'body-parser'
 import connectDB from './config/db.js'
+import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
+import { registerNewUser } from './controllers/userController.js'
+import uploadRoutes from './routes/uploadRoutes.js'
+import userRoutes from './routes/userRoutes.js'
+
 
 // configurations
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+
 dotenv.config()
 connectDB()
 const app = express()
@@ -22,20 +25,20 @@ app.use(morgan("common"))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors())
-app.use("/assets", express.static(path.join(__dirname, 'public/assets')))
 
-// FILE STORAGE
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/assets')
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.originalname + '-' + uniqueSuffix)
-    }
-})
 
-const upload = multer({ storage })
+//ROUTES
+app.use('/api/upload', uploadRoutes)
+app.use('/api/users', userRoutes)
+
+//STATIC FILES
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+app.use("/uploads", express.static(path.join(__dirname, '/uploads')))
+
+//ERROR MIDDLEWARES
+app.use(notFound)
+app.use(errorHandler)
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 3001
