@@ -8,8 +8,8 @@ import { fileURLToPath } from 'url'
 import bodyParser from 'body-parser'
 import connectDB from './config/db.js'
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
-import { registerNewUser } from './controllers/userController.js'
 import uploadRoutes from './routes/uploadRoutes.js'
+import authUsersRoutes from './routes/authUsersRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 
 
@@ -29,6 +29,7 @@ app.use(cors())
 
 //ROUTES
 app.use('/api/upload', uploadRoutes)
+app.use('/api/auth/users', authUsersRoutes)
 app.use('/api/users', userRoutes)
 
 //STATIC FILES

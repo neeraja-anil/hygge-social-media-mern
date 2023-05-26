@@ -1,9 +1,15 @@
 import express from 'express'
-import { registerNewUser, authUser } from '../controllers/userController.js'
+import { protect } from '../middlewares/authMiddleware.js'
+import { getUser } from '../controllers/userController.js'
 
 const router = express.Router()
 
-router.post('/', registerNewUser)
-router.post('/login', authUser)
+//READ
+router.route('/:id').get(protect, getUser)
+//router.route('/:id/friends').get(protect, getUserFriends)
+
+//UPDATE
+//router.route('/:id/:friendId').patch(protect, addRemoveFriend)
+
 
 export default router
