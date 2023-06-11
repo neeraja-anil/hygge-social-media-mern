@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import Footer from './components/Footer';
 import HomeScreen from './screens/HomeScreen';
-import Navbar from './components/Navbar';
+
 
 import { useSelector } from 'react-redux';
 import { createTheme } from '@mui/material/styles';
@@ -17,9 +17,8 @@ function App() {
   return (
     <div className="app">
       <ThemeProvider theme={theme}>
-        <Navbar />
         <Routes>
-          <Route exact path='/' element={<HomeScreen />} />
+          <Route exact path='/home' element={<HomeScreen />} />
         </Routes>
         <Footer />
       </ThemeProvider>
