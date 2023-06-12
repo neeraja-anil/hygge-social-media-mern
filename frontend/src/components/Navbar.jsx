@@ -60,9 +60,9 @@ const Navbar = () => {
                             <LightMode sx={{ color: 'dark', fontSize: '25px' }} />
                         )}
                     </IconButton>
-                    <Message sx={{ fontSize: '25px' }} />
-                    <Notifications sx={{ fontSize: '25px' }} />
-                    <Help sx={{ fontSize: '25px' }} />
+                    <Message sx={{ fontSize: '25px', color: neutralDark }} />
+                    <Notifications sx={{ fontSize: '25px', color: neutralDark }} />
+                    <Help sx={{ fontSize: '25px', color: neutralDark }} />
                     <FormControl variant='standard' value={fullName}>
                         <Select
                             value={fullName}
@@ -115,6 +115,44 @@ const Navbar = () => {
                             <Close />
                         </IconButton>
                     </Box>
+                    {/* MENU ITEMS */}
+                    <FlexBetween display='flex' flexDirection='column' gap='2rem'>
+                        <IconButton onClick={() => dispatch(setMode())} >
+                            {theme.palette.mode === 'dark' ? (
+                                <DarkMode sx={{ fontSize: '25px' }} />
+                            ) : (
+                                <LightMode sx={{ color: 'dark', fontSize: '25px' }} />
+                            )}
+                        </IconButton>
+                        <Message sx={{ fontSize: '25px', color: neutralDark }} />
+                        <Notifications sx={{ fontSize: '25px', color: neutralDark }} />
+                        <Help sx={{ fontSize: '25px', color: neutralDark }} />
+                        <FormControl variant='standard' value={fullName}>
+                            <Select
+                                value={fullName}
+                                sx={{
+                                    backgroundColor: neutralLight,
+                                    width: '150px',
+                                    borderRadius: '0.25rem',
+                                    p: '0.25rem 1rem',
+                                    '& .MuiSvgIcon-root': {
+                                        pr: '0.25rem',
+                                        width: '3rem'
+                                    },
+                                    '& .MuiSelect-select:focus': {
+                                        backgroundColor: neutralLight
+                                    }
+                                }}
+                                input={<InputBase />}
+                            >
+                                <MenuItem value={fullName}>
+                                    <Typography>{fullName}</Typography>
+                                </MenuItem>
+                                <MenuItem >Logout</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                    </FlexBetween>
                 </Box>
             )}
 

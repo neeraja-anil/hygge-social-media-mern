@@ -33,14 +33,6 @@ export const colorTokens = {
 //mui theme settings
 
 export const themeSettings = (mode) => {
-
-    const neutral = { // Create a new variable for the neutral color palette
-        dark: colorTokens.grey[700],
-        main: colorTokens.grey[500],
-        mediumMain: colorTokens.grey[400],
-        medium: colorTokens.grey[300],
-        light: colorTokens.grey[50],
-    }
     return {
         palette: {
             mode,
@@ -51,7 +43,13 @@ export const themeSettings = (mode) => {
                     main: colorTokens.primary[500],
                     light: colorTokens.primary[800],
                 },
-                neutral,
+                neutral: {
+                    dark: colorTokens.grey[100],
+                    main: colorTokens.grey[200],
+                    mediumMain: colorTokens.grey[300],
+                    medium: colorTokens.grey[400],
+                    light: colorTokens.grey[700],
+                },
                 background: {
                     default: colorTokens.grey[900],
                     alt: colorTokens.grey[800]
@@ -63,7 +61,13 @@ export const themeSettings = (mode) => {
                     main: colorTokens.primary[500],
                     light: colorTokens.primary[50],
                 },
-                neutral,
+                neutral: { // Create a new variable for the neutral color palette
+                    dark: colorTokens.grey[700],
+                    main: colorTokens.grey[500],
+                    mediumMain: colorTokens.grey[400],
+                    medium: colorTokens.grey[300],
+                    light: colorTokens.grey[50],
+                },
                 background: {
                     default: colorTokens.grey[10],
                     alt: colorTokens.grey[0]
