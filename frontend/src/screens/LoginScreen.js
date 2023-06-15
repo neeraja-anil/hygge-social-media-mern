@@ -3,19 +3,42 @@ import { ThemeProvider } from '@mui/material/styles'
 import { Box, Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid, } from '@mui/material'
 import { CloseFullscreen, LockOutlined } from '@mui/icons-material'
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import e from 'cors'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLoginMutation } from '../redux/usersApiSlice'
+import { setLogin } from '../redux/authSlice'
+import { toast } from 'react-toastify'
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const handleFormSubmit = (e) => {
+    const [login, { isLoading }] = useLoginMutation()
+
+    const { user } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        if (user) {
+            navigate('/home')
+        }
+    }, [user, navigate])
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault()
-        //disatch login
-
+        //disatching login
+        try {
+            const res = await login({ email, password }).unwrap()
+            console.log('res', res)
+            dispatch(setLogin({ ...res }))
+            navigate('/home')
+        } catch (err) {
+            toast.error(err?.data?.message || err.error)
+        }
     }
+
     return (
         //<ThemeProvider >
         <Container component="main" maxWidth="xs">
@@ -39,7 +62,6 @@ const LoginScreen = () => {
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
                         label="Email Address"
                         name="email"
                         autoComplete="email"
@@ -54,7 +76,6 @@ const LoginScreen = () => {
                         fullWidth
                         name="password"
                         label="Password"
-                        id="password"
                         autoComplete="current-password"
                         type='password'
                         value={password}
@@ -72,6 +93,7 @@ const LoginScreen = () => {
                     >
                         Sign In
                     </Button>
+                    {isLoading && 'loading...'}
                     <Grid container>
                         <Grid item xs>
                             <Link to="#" variant="body2">

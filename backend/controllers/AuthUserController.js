@@ -8,7 +8,7 @@ let client, newUser
 
 
 //@desc   Register new user
-//@route  POST /api/users
+//@route  POST /api/auth/users
 //@access public 
 
 const registerNewUser = asyncHandler(async (req, res) => {

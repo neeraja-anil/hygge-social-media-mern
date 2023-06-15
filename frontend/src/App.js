@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom'
-
-import Footer from './components/Footer';
-import HomeScreen from './screens/HomeScreen';
-
-
 import { useSelector } from 'react-redux';
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeSettings } from './theme';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+
 
 function App() {
   const mode = useSelector((state) => state.mode.mode)
@@ -18,9 +19,11 @@ function App() {
     <div className="app">
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route exact path='/home' element={<HomeScreen />} />
+          <Route exact path='/' element={<LoginScreen />} />
+          <Route path='/register' element={<RegisterScreen />} />
+          <Route path='/home' element={<HomeScreen />} />
         </Routes>
-        <Footer />
+        <ToastContainer />
       </ThemeProvider>
     </div>
   );

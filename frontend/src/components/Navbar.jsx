@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setMode } from '../redux/modeSlice'
 import FlexBetween from './FlexBetween'
+import { setLogout } from '../redux/authSlice'
 
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false)
@@ -19,10 +20,12 @@ const Navbar = () => {
     const primaryLight = theme.palette.primary.light
     const alt = theme.palette.background.alt
 
-    const fullName = 'fakeman'
-    //  const fullName = `${user.firstName} ${user.lastName}`
+    const { user } = useSelector((state) => state.auth)
+    const fullName = user ? `${user.firstName} ${user.lastName}` : ''
 
-
+    const click = () => {
+        console.log('first')
+    }
     return (
         <FlexBetween padding='1rem 6%' backgroundColor={alt} >
             <FlexBetween gap='1.75rem'>
@@ -84,7 +87,7 @@ const Navbar = () => {
                             <MenuItem value={fullName}>
                                 <Typography>{fullName}</Typography>
                             </MenuItem>
-                            <MenuItem >Logout</MenuItem>
+                            <MenuItem onClick={() => dispatch(setLogout())}>Logout</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -148,7 +151,7 @@ const Navbar = () => {
                                 <MenuItem value={fullName}>
                                     <Typography>{fullName}</Typography>
                                 </MenuItem>
-                                <MenuItem >Logout</MenuItem>
+                                <MenuItem onClick={() => dispatch(setLogout())}>Logout</MenuItem>
                             </Select>
                         </FormControl>
 
