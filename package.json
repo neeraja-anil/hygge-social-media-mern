@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node backend/server",
-    "server": "nodemon backend/server"
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Neeraja",
   "license": "ISC",
@@ -25,5 +27,8 @@
     "multer-gridfs-storage": "^5.0.2",
     "nodemon": "^2.0.22",
     "twilio": "^4.11.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
   }
 }
