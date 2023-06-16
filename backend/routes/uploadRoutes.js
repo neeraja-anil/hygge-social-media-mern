@@ -7,7 +7,7 @@ const router = express.Router()
 // FILE STORAGE
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads')
+        cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
         cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 //FILE ROUTES
-router.post('/', upload.single('picture'), (req, res) => {
+router.post('/', upload.single('picturePath'), (req, res) => {
     res.send(`/${req.file.path}`)
 })
 
