@@ -21,7 +21,7 @@ const registerNewUser = asyncHandler(async (req, res) => {
         picturePath,
         friends,
         location,
-        occupation
+        occupation,
     } = req.body
 
     newUser = new User({
@@ -62,35 +62,33 @@ const verifyNewUser = asyncHandler(async (req, res) => {
         .verificationChecks.create({ to: `+91${phone}`, code: otp })
 
     if (verifyOtp) {
-        res.status(200).json('OTP verified successfully!')
 
+        const user = await newUser.save()
+        if (user) {
+            const { password, phone, ...otherData } = user._doc
+            res.status(201).json({
+                ...otherData,
+                token: generateToken(user._id),
+                message: 'otp verified successfully'
+            })
+        } else {
+            res.status(400)
+            throw new Error('Invalid user data')
+        }
     }
 
-    const user = await newUser.save()
-    if (user)
-        res.status(201).json({
-            _id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phone: user.phone,
-            token: generateToken(user._id),
-        })
-    else {
-        res.status(400)
-        throw new Error('Invalid user data')
-    }
+
 })
 
 //@desc   Auth user & get token
-//@route  POST /api/users/login
+//@route  POST /api/auth/users/login
 //@access public 
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
     const user = await User.findOne({ email })
 
     if (user && (await user.matchPassword(password))) {
-        const { password, ...otherData } = user._doc   //to negate password from being send
+        const { password, phone, ...otherData } = user._doc   //to negate password from being send
         res.json({
             ...otherData,
             token: generateToken(user._id),

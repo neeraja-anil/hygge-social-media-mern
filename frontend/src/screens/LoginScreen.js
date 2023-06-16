@@ -1,7 +1,7 @@
 import React from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import { Box, Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid, } from '@mui/material'
-import { CloseFullscreen, LockOutlined } from '@mui/icons-material'
+import { LockOutlined } from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
