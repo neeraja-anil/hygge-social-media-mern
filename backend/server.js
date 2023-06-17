@@ -33,9 +33,8 @@ app.use('/api/auth/users', authUsersRoutes)
 app.use('/api/users', userRoutes)
 
 //STATIC FILES
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-app.use("/uploads", express.static(path.join(__dirname, '/uploads')))
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 //ERROR MIDDLEWARES
 app.use(notFound)

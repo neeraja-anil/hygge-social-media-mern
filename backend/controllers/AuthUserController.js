@@ -62,12 +62,14 @@ const verifyNewUser = asyncHandler(async (req, res) => {
         .verificationChecks.create({ to: `+91${phone}`, code: otp })
 
     if (verifyOtp) {
-
         const user = await newUser.save()
         if (user) {
-            const { password, phone, ...otherData } = user._doc
+            //const { password, phone, ...otherData } = user._doc
             res.status(201).json({
-                ...otherData,
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
                 token: generateToken(user._id),
                 message: 'otp verified successfully'
             })

@@ -10,6 +10,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import VerifyUserRegScreen from './screens/VerifyUserRegScreen';
+import { CssBaseline } from '@mui/material';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
   return (
     <div className="app">
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Routes>
           <Route exact path='/' element={<LoginScreen />} />
           <Route path='/register' element={<RegisterScreen />} />
