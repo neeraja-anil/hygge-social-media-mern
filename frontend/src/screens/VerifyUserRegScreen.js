@@ -6,17 +6,18 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useVerifyRegistrationMutation } from '../redux/usersApiSlice'
+import { clearPhone } from '../redux/authSlice'
 import { toast } from 'react-toastify'
 
 
 const VerifyUserRegScreen = () => {
-    const [phone, setPhone] = useState('')
     const [otp, setOtp] = useState('')
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const [verifyRegistration, { isLoading }] = useVerifyRegistrationMutation()
+    const { phone } = useSelector(state => state.auth)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -25,6 +26,7 @@ const VerifyUserRegScreen = () => {
             const res = await verifyRegistration({ phone, otp }).unwrap()
             toast.success(res.message)
             navigate('/')
+            dispatch(clearPhone())
         } catch (err) {
             toast.error(err?.data?.message || err.error)
         }
@@ -51,18 +53,6 @@ const VerifyUserRegScreen = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
-                                name="Phone"
-                                required
-                                fullWidth
-                                label="Phone"
-                                autoFocus
-                                type='phone'
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
                                 required
                                 fullWidth
                                 label="OTP"
@@ -83,7 +73,7 @@ const VerifyUserRegScreen = () => {
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link to={'/'} variant="body2">
+                            <Link to={'/'} style={{ textDecoration: 'none' }}>
                                 Already have an account? Sign in
                             </Link>
                         </Grid>

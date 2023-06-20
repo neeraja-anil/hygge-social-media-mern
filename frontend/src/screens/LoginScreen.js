@@ -16,13 +16,16 @@ const LoginScreen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const { search } = useLocation();
+    const redirect = search ? new URLSearchParams(search).get('redirect') : '/home'
+
     const [login, { isLoading }] = useLoginMutation()
 
     const { user } = useSelector((state) => state.auth)
 
     useEffect(() => {
         if (user) {
-            navigate('/home')
+            navigate(redirect)
         }
     }, [user, navigate])
 
@@ -96,12 +99,12 @@ const LoginScreen = () => {
                     {isLoading && 'loading...'}
                     <Grid container>
                         <Grid item xs>
-                            <Link to="#" variant="body2">
+                            <Link to="#" style={{ textDecoration: 'none' }}>
                                 Forgot password?
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link to="/register" variant="body2">
+                            <Link to="/register" style={{ textDecoration: 'none' }}>
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>

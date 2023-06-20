@@ -9,6 +9,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import FlexBetween from '../components/FlexBetween'
 import { useRegistrationMutation } from '../redux/usersApiSlice'
+import { setOtpRegister } from '../redux/authSlice'
 import { toast } from 'react-toastify'
 
 
@@ -50,8 +51,8 @@ const RegisterScreen = () => {
         //disatching registration
         try {
             const res = await registration({ firstName, lastName, picturePath, phone, email, password }).unwrap()
-            console.log('res', res)
-            toast.success(res)
+            toast.success(res.msg)
+            dispatch(setOtpRegister(res.phone))
             navigate('/verify')
         } catch (err) {
             toast.error(err?.data?.message || err.error)
@@ -169,7 +170,7 @@ const RegisterScreen = () => {
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link to={'/'} variant="body2">
+                            <Link to={'/'} style={{ textDecoration: 'none' }}>
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
