@@ -46,7 +46,10 @@ const registerNewUser = asyncHandler(async (req, res) => {
         .verifications.create({ to: `+91${phone}`, channel: "sms" })
 
     if (GenerateOtp) {
-        res.status(200).json('OTP send successfully')
+        res.status(200).json({
+            phone,
+            msg: 'OTP send successfully'
+        })
     } else {
         throw new Error("Something Went Wrong")
     }
