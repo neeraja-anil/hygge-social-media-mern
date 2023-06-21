@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import Dropzone from 'react-dropzone'
 import CardWrapper from '../components/CardWrapper'
 import FlexBetween from '../components/FlexBetween'
-import { ImageOutlined, MicNoneOutlined, MovieOutlined, EditOutlined } from '@mui/icons-material'
+import { ImageOutlined, MicNoneOutlined, MovieOutlined, EditOutlined, DeleteOutline } from '@mui/icons-material'
 
 
 const CreatePostCard = () => {
@@ -75,7 +75,7 @@ const CreatePostCard = () => {
                     {({ getRootProps, getInputProps }) => (
                         <Box
                             {...getRootProps()}
-                            border={'2px dashed'}
+                            border={`2px dashed ${medium}`}
                             p='1rem'
                             sx={{ '&.hover': { cursor: 'pointer' } }}
                         >
@@ -84,8 +84,13 @@ const CreatePostCard = () => {
                                 <p>Add Image Here</p>
                             ) : (
                                 <FlexBetween>
-                                    <Typography>{image.name}</Typography>
-                                    <EditOutlined />
+                                    <Typography sx={{ color: medium }}>{image.name}</Typography>
+                                    <FlexBetween>
+                                        <EditOutlined />
+                                        <IconButton onClick={() => setImage({})}>
+                                            <DeleteOutline />
+                                        </IconButton>
+                                    </FlexBetween>
                                 </FlexBetween>
                             )}
                         </Box>
