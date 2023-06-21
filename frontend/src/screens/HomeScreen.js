@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ProfileCard from '../homeCards/ProfileCard';
+import CreatePostCard from '../homeCards/CreatePostCard';
 
 const HomeScreen = () => {
     const navigate = useNavigate()
@@ -29,9 +30,12 @@ const HomeScreen = () => {
                 <Box flexBasis={isNonMobileScreens ? '25%' : ''}>
                     <ProfileCard />
                 </Box>
+                <Box flexBasis={isNonMobileScreens ? '50%' : ''} mt={isNonMobileScreens ? '' : '2rem'}>
+                    <CreatePostCard />
+                </Box>
             </Box>
 
-        </Box>
+        </Box >
     )
 }
 
