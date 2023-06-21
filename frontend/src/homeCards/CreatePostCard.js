@@ -44,6 +44,8 @@ const CreatePostCard = () => {
             const { data } = await axios.post("http://localhost:5001/api/posts", formData, config)
             const posts = data
             console.log('post', posts)
+            setPost("")
+            setImage({})
         } catch (error) {
             console.log(error)
         }
