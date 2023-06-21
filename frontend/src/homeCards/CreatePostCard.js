@@ -77,7 +77,7 @@ const CreatePostCard = () => {
                             {...getRootProps()}
                             border={`2px dashed ${medium}`}
                             p='1rem'
-                            sx={{ '&.hover': { cursor: 'pointer' } }}
+                            sx={{ '&:hover': { cursor: 'pointer' } }}
                         >
                             <input {...getInputProps()} />
                             {!image.name ? (
@@ -124,6 +124,7 @@ const CreatePostCard = () => {
                         sx={{
                             color: '#ffffff',
                             backgroundColor: theme.palette.primary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.dark }
                         }}
                     >
                         post
