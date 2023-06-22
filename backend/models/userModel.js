@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    posts: {
+        type: Array,
+        default: []
+    },
     location: String,
     occupation: String,
     viewedProfiles: Number,

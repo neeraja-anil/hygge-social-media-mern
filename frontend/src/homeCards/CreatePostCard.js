@@ -25,13 +25,12 @@ const CreatePostCard = () => {
         return null
     }
     //PROFILE PIC UPLOAD
-    const handleUploadPost = async (acceptedFiles) => {
-        //const file = acceptedFiles[0]
+    const handleUploadPost = async () => {
         const formData = new FormData()
         formData.append('description', post)
         if (image) {
             formData.append('post', image)
-            formData.append('postPath', image.name)
+            formData.append('postPath', image.path)
         }
 
         try {
@@ -41,7 +40,7 @@ const CreatePostCard = () => {
                     'authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await axios.post("http://localhost:5001/api/posts", formData, config)
+            const { data } = await axios.post("http://localhost:5001/api/posts/create", formData, config)
             const posts = data
             console.log('post', posts)
             setPost("")

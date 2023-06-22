@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import bodyParser from 'body-parser'
 import multer from 'multer'
 import connectDB from './config/db.js'
@@ -12,8 +11,7 @@ import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 import authUsersRoutes from './routes/authUsersRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import postRoutes from './routes/postRoutes.js'
-import { createNewPost } from './controllers/postController.js'
-import { protect } from './middlewares/authMiddleware.js'
+import { upload } from './utils/multer.js'
 
 
 // configurations
@@ -29,26 +27,12 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors())
 
-// FILE STORAGE
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-})
-const upload = multer({ storage })
-
 //FILE ROUTES
 app.post('api/upload', upload.single('picturePath'), (req, res) => {
     res.send(`/${req.file.path}`)
 })
 
-app.post('/api/posts', protect, upload.single('post'), createNewPost)
-
 //ROUTES
-//app.use('/api/upload', uploadRoutes)
 app.use('/api/auth/users', authUsersRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/posts', postRoutes)

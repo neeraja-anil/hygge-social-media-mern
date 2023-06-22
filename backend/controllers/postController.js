@@ -1,26 +1,40 @@
 import asyncHandler from "express-async-handler";
 import Post from "../models/postsModel.js";
+import User from "../models/userModel.js";
+import cloudinary from "../utils/cloudinary.js";
+
 
 //@desc Create a post
 //@route POST /api/post/create
 //@access private
 
 const createNewPost = asyncHandler(async (req, res) => {
-    const { firstName, lastName, picturePath, postPath, description } = req.body
+    const { description } = req.body
+    const user = await User.findOne({ _id: req.user._id });
 
-    const post = await Post.create({
-        user: req.user._id,
-        firstName,
-        lastName,
-        picturePath,
-        postPath,
-        description
-    })
-    if (post) {
-        res.status(201).json('Post Created')
-    } else {
-        res.status(400).json('something went wrong')
+    try {
+        // Upload image to cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path, { folder: 'posts' })
+        console.log(result)
+        const post = await Post.create({
+            user: req.user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            picturePath: user.picturePath,
+            postPath: result.secure_url,
+            coloudinary_id: result.public_id,
+            description
+        })
+        user.posts.push(post._id);
+        const userData = await user.save();
+
+        res.status(201).json({ status: 'success', msg: 'post uploaded', post })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json(err);
+
     }
+
 })
 
 //@desc Get post by id
