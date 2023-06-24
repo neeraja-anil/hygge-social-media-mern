@@ -18,14 +18,11 @@ export const authSlice = createSlice({
             state.user = null
             localStorage.removeItem('user')
         },
-        setOtpRegister: (state, action) => {
-            state.phone = action.payload
-        },
-        clearPhone: (state) => {
-            state.phone = null
+        clearUser: (state) => {
+            state.user = null
         }
     }
 })
 
-export const { setLogin, setLogout, setOtpRegister, clearPhone } = authSlice.actions
+export const { setLogin, setLogout, setOtpRegister, clearUser } = authSlice.actions
 export default authSlice.reducer

@@ -27,7 +27,9 @@ const userSchema = new mongoose.Schema({
     },
     picturePath: {
         type: String,
-        default: ""
+    },
+    cloudinary_id: {
+        type: String,
     },
     friends: {
         type: Array,

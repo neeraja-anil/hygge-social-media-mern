@@ -1,59 +1,35 @@
 import React from 'react'
-import axios from 'axios'
 import { ThemeProvider } from '@mui/material/styles'
-import { Box, Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid, } from '@mui/material'
+import { Box, Container, CssBaseline, Avatar, Typography, TextField, Button, Grid, } from '@mui/material'
 import { EditOutlined, LockOutlined } from '@mui/icons-material'
 import Dropzone from 'react-dropzone'
-import { useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import FlexBetween from '../components/FlexBetween'
 import { useRegistrationMutation } from '../redux/usersApiSlice'
-import { setOtpRegister } from '../redux/authSlice'
 import { toast } from 'react-toastify'
 
 
 const RegisterScreen = () => {
+    const [avatar, setAvatar] = useState({})
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [picturePath, setPicturePath] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
     const [registration, { isLoading }] = useRegistrationMutation()
-
-    //PROFILE PIC UPLOAD
-    const handleUpload = async (acceptedFiles) => {
-        const file = acceptedFiles[0]
-        const formData = new FormData()
-        formData.append('picturePath', file)
-
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-            const { data } = await axios.post("http://localhost:5001/api/upload", formData, config)
-            setPicturePath(data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     //FORM SUBMIT
     const handleSubmit = async (e) => {
         e.preventDefault()
-        //disatching registration
         try {
-            const res = await registration({ firstName, lastName, picturePath, phone, email, password }).unwrap()
+            const res = await registration({ firstName, lastName, phone, email, password }).unwrap()
+            console.log(res)
             toast.success(res.msg)
-            dispatch(setOtpRegister(res.phone))
-            navigate('/verify')
+            navigate('/verify', { state: { data: { firstName, lastName, phone, email, password, avatar } } })
         } catch (err) {
             toast.error(err?.data?.message || err.error)
         }
@@ -104,7 +80,7 @@ const RegisterScreen = () => {
                             <Dropzone
                                 acceptedFiles='.jpg,.jpeg,.png'
                                 multiple={false}
-                                onDrop={(acceptedFiles) => handleUpload(acceptedFiles)}
+                                onDrop={(acceptedFiles) => setAvatar(acceptedFiles[0])}
                             >
                                 {({ getRootProps, getInputProps }) => (
                                     <Box
@@ -114,11 +90,11 @@ const RegisterScreen = () => {
                                         sx={{ '&.hover': { cursor: 'pointer' } }}
                                     >
                                         <input {...getInputProps()} />
-                                        {!picturePath ? (
+                                        {!avatar.name ? (
                                             <p>Add Picture Here</p>
                                         ) : (
                                             <FlexBetween>
-                                                <Typography>{picturePath}</Typography>
+                                                <Typography>{avatar.name}</Typography>
                                                 <EditOutlined />
                                             </FlexBetween>
                                         )}

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useVerifyRegistrationMutation } from '../redux/usersApiSlice'
-import { clearPhone } from '../redux/authSlice'
+import { clearUser } from '../redux/authSlice'
 import { toast } from 'react-toastify'
 
 
@@ -15,18 +15,26 @@ const VerifyUserRegScreen = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { state } = useLocation()
+    const { firstName, lastName, phone, email, password, avatar, picturePath } = state.data
 
     const [verifyRegistration, { isLoading }] = useVerifyRegistrationMutation()
-    const { phone } = useSelector(state => state.auth)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const formData = new FormData()
+        formData.append('firstName', firstName)
+        formData.append('lastName', lastName)
+        formData.append('phone', phone)
+        formData.append('email', email)
+        formData.append('password', password)
+        formData.append('avatar', avatar)
+        formData.append('otp', otp)
         //disatching verifyRegistration
         try {
-            const res = await verifyRegistration({ phone, otp }).unwrap()
+            const res = await verifyRegistration(formData).unwrap()
             toast.success(res.message)
             navigate('/')
-            dispatch(clearPhone())
         } catch (err) {
             toast.error(err?.data?.message || err.error)
         }

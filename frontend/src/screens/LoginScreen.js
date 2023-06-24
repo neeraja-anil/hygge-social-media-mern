@@ -1,6 +1,6 @@
 import React from 'react'
 import { ThemeProvider } from '@mui/material/styles'
-import { Box, Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid, } from '@mui/material'
+import { Box, Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid, CircularProgress } from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -96,7 +96,7 @@ const LoginScreen = () => {
                     >
                         Sign In
                     </Button>
-                    {isLoading && 'loading...'}
+                    {isLoading && <CircularProgress />}
                     <Grid container>
                         <Grid item xs>
                             <Link to="#" style={{ textDecoration: 'none' }}>

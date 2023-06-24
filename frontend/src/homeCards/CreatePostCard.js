@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Box, useTheme, Avatar, Typography, Divider, useMediaQuery, InputBase, IconButton, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import Dropzone from 'react-dropzone'
 import CardWrapper from '../components/CardWrapper'
 import FlexBetween from '../components/FlexBetween'
@@ -12,18 +13,19 @@ const CreatePostCard = () => {
     const [post, setPost] = useState('')
     const [isImage, setIsImage] = useState(false)
     const [image, setImage] = useState({})
-
+    const navigate = useNavigate()
     const { user } = useSelector((state) => state.auth)
-
-    const { picturePath, token } = user
 
     const theme = useTheme()
     const neutralLight = theme.palette.neutral.light
     const medium = theme.palette.neutral.medium
 
-    if (!user) {
-        return null
-    }
+    useEffect(() => {
+        if (!user) {
+            navigate('/')
+        }
+    }, [user, navigate])
+
     //PROFILE PIC UPLOAD
     const handleUploadPost = async () => {
         const formData = new FormData()
@@ -37,7 +39,7 @@ const CreatePostCard = () => {
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'authorization': `Bearer ${token}`
+                    'authorization': `Bearer ${user && user.token}`
                 }
             }
             const { data } = await axios.post("http://localhost:5001/api/posts/create", formData, config)
@@ -52,7 +54,7 @@ const CreatePostCard = () => {
     return (
         <CardWrapper>
             <FlexBetween gap='1rem' pb='0.5rem'>
-                <Avatar src={picturePath} />
+                <Avatar src={user && user.picturePath} />
                 <InputBase
                     placeholder='New Post'
                     value={post}
