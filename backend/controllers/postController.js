@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import fs from 'fs'
 import Post from "../models/postsModel.js";
 import User from "../models/userModel.js";
 import cloudinary from "../utils/cloudinary.js";
@@ -16,6 +17,7 @@ const createNewPost = asyncHandler(async (req, res) => {
         // Upload image to cloudinary
         const result = await cloudinary.uploader.upload(req.file.path, { folder: 'posts' })
         console.log(result)
+        fs.unlinkSync(req.file.path);
         const post = await Post.create({
             user: req.user._id,
             firstName: user.firstName,

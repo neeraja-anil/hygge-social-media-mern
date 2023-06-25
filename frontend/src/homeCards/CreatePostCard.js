@@ -4,6 +4,7 @@ import { Box, useTheme, Avatar, Typography, Divider, useMediaQuery, InputBase, I
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Dropzone from 'react-dropzone'
+import { toast } from 'react-toastify'
 import CardWrapper from '../components/CardWrapper'
 import FlexBetween from '../components/FlexBetween'
 import { ImageOutlined, MicNoneOutlined, MovieOutlined, EditOutlined, DeleteOutline } from '@mui/icons-material'
@@ -45,6 +46,11 @@ const CreatePostCard = () => {
             const { data } = await axios.post("http://localhost:5001/api/posts/create", formData, config)
             const posts = data
             console.log('post', posts)
+            if (posts.status === 'success') {
+                toast.success(posts.msg)
+            } else {
+                toast.error(posts.msg)
+            }
             setPost("")
             setImage({})
         } catch (error) {
