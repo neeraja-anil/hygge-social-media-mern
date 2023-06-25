@@ -16,4 +16,48 @@ const getUser = asyncHandler(async (req, res) => {
     }
 })
 
-export { getUser }
+//@desc   Get user friends by id
+//@route  GET /api/users/:id/friends
+//@access private
+
+const getUserFriends = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id).select('-password')
+    const friends = await Promise.all(
+        user.friends.map((id) => User.findById(id).select('-password'))
+    )
+
+    const formattedFriends = friends.map(({ _id, firstName, lastName, PicturePath, posts }) => {
+        return { _id, firstName, lastName, PicturePath, posts }
+    })
+    res.json(formattedFriends)
+})
+
+//@desc   Add or Remove friends/followers
+//@route  PUT /api/users/:id/friends
+//@access private
+const addRemoveFriend = asyncHandler(async (req, res) => {
+    if (req.user._id !== req.params.id) {
+        try {
+            const friend = await User.findById(req.params.id)
+            const user = await User.findById(req.user._id)
+            if (!user.friends.includes(req.params.id)) {
+                await user.updateOne({ $push: { friends: req.params.id } })
+                await friend.updateOne({ $push: { followers: req.user._id } })
+
+                res.status(200).json('followed')
+            } else {
+                await user.updateOne({ $pull: { friends: req.params.id } })
+                await friend.updateOne({ $pull: { followers: req.user._id } })
+                res.status(200).json('unfollowed')
+            }
+        } catch (err) {
+            console.log(err)
+            res.status(500)
+            throw new Error('something went wrong, try again')
+        }
+    } else {
+        res.json('you cant follow yourself')
+    }
+})
+
+export { getUser, getUserFriends, addRemoveFriend }

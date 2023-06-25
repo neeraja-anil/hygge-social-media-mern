@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    followers: {
+        type: Array,
+        default: []
+    },
     posts: {
         type: Array,
         default: []

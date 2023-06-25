@@ -1,15 +1,15 @@
 import express from 'express'
 import { protect } from '../middlewares/authMiddleware.js'
-import { getUser } from '../controllers/userController.js'
+import { getUser, getUserFriends, addRemoveFriend } from '../controllers/userController.js'
 
 const router = express.Router()
 
 //READ
 router.route('/:id').get(protect, getUser)
-//router.route('/:id/friends').get(protect, getUserFriends)
+router.route('/:id/friends').get(protect, getUserFriends)
 
 //UPDATE
-//router.route('/:id/:friendId').patch(protect, addRemoveFriend)
+router.route('/:id/friends').put(protect, addRemoveFriend)
 
 
 export default router
