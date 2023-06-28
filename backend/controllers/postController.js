@@ -75,14 +75,17 @@ const deletePost = asyncHandler(async (req, res) => {
 
 const getAllPosts = asyncHandler(async (req, res) => {
 
-    const post = await Post.findById(req.params.id)
-    if (!post.likes.includes(req.user._id)) {
-        console.log(post, 'liked')
-        // await post.updateOne
+    // const user = await User.findById(req.user._id)
+    // const userPosts = await Post.find({ user: user._id })
+    // const friendsPosts = await Promise.all(
+    //     user.friends.map((id) => Post.find({ user: id }))
+    // )
+    // console.log('user', userPosts, 'friend', friendsPosts)
+    // const allPosts = userPosts.concat(...friendsPosts)
+    // res.status(200).json(allPosts)
 
-    } else {
-        console.log('not liked')
-    }
+    const allPosts = await Post.find().sort({ createdAt: -1 })
+    res.status(200).json(allPosts)
 })
 
-export { createNewPost, getPostById, deletePost }
+export { createNewPost, getPostById, deletePost, getAllPosts }
