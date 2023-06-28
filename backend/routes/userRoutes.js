@@ -9,7 +9,7 @@ router.route('/:id').get(protect, getUser)
 router.route('/:id/friends').get(protect, getUserFriends)
 
 //UPDATE
-router.route('/:id/friends').put(protect, addRemoveFriend)
+router.route('/:id/addfriend').put(protect, addRemoveFriend)
 
 
 export default router

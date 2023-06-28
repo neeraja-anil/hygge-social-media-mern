@@ -3,15 +3,18 @@ import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, useTheme, Avatar, useMediaQuery, CircularProgress, IconButton, Divider } from '@mui/material'
 import { Chat, FavoriteBorder, PersonAddAlt, PersonRemove } from '@mui/icons-material'
-import { usePostsQuery } from '../redux/postApiSlice'
-import { setPosts } from '../redux/postSlice'
+import { useAddRemoveFriendMutation } from '../redux/usersApiSlice'
+import { useGetUserQuery } from '../redux/usersApiSlice'
+import { setUser } from '../redux/authSlice';
 import CardWrapper from '../components/CardWrapper'
 import FlexBetween from '../components/FlexBetween'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const PostsCard = ({ post }) => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
 
     const date = moment(post.createdAt).format('YYYY-MM-DD')
@@ -20,6 +23,16 @@ const PostsCard = ({ post }) => {
     const theme = useTheme()
     const medium = theme.palette.neutral.medium
     const isMobileScreens = useMediaQuery('(max-width:900px)')
+
+    const { data: userInfo, error } = useGetUserQuery(user._id)
+    const [addRemoveFriend, { isLoading }] = useAddRemoveFriendMutation()
+
+    const addFriend = async () => {
+        const id = post.user
+        const res = await addRemoveFriend(id).unwrap()
+        dispatch(setUser(userInfo))
+        toast.success(res)
+    }
 
     useEffect(() => {
         if (!user) {
@@ -40,7 +53,7 @@ const PostsCard = ({ post }) => {
 
                     </FlexBetween>
                     <FlexBetween gap='1rem'>
-                        <IconButton>
+                        <IconButton onClick={addFriend}>
                             {user.friends.includes(post.user) ? <PersonRemove /> : <PersonAddAlt />}
                         </IconButton>
                     </FlexBetween>

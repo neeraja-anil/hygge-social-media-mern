@@ -33,7 +33,7 @@ const getUserFriends = asyncHandler(async (req, res) => {
 })
 
 //@desc   Add or Remove friends/followers
-//@route  PUT /api/users/:id/friends
+//@route  PUT /api/users/:id/addfriend
 //@access private
 const addRemoveFriend = asyncHandler(async (req, res) => {
 
