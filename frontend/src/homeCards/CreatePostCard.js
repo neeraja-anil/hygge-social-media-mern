@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Box, useTheme, Avatar, Typography, Divider, useMediaQuery, InputBase, IconButton, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useCreateNewPostMutation } from '../redux/postApiSlice'
 import Dropzone from 'react-dropzone'
 import { toast } from 'react-toastify'
 import CardWrapper from '../components/CardWrapper'
@@ -15,11 +16,13 @@ const CreatePostCard = () => {
     const [isImage, setIsImage] = useState(false)
     const [image, setImage] = useState({})
     const navigate = useNavigate()
-    const { user } = useSelector((state) => state.auth)
+    const { user, token } = useSelector((state) => state.auth)
 
     const theme = useTheme()
     const neutralLight = theme.palette.neutral.light
     const medium = theme.palette.neutral.medium
+
+    const [createNewPost, { isLoading }] = useCreateNewPostMutation()
 
     useEffect(() => {
         if (!user) {
@@ -37,19 +40,11 @@ const CreatePostCard = () => {
         }
 
         try {
-            const config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'authorization': `Bearer ${user && user.token}`
-                }
-            }
-            const { data } = await axios.post("http://localhost:5001/api/posts/create", formData, config)
-            const posts = data
-            console.log('post', posts)
-            if (posts.status === 'success') {
-                toast.success(posts.msg)
+            const res = await createNewPost(formData).unwrap()
+            if (res.status === 'success') {
+                toast.success(res.msg)
             } else {
-                toast.error(posts.msg)
+                toast.error(res.msg)
             }
             setPost("")
             setImage({})
@@ -106,8 +101,8 @@ const CreatePostCard = () => {
             ) : null}
 
             <Divider />
-            <FlexBetween gap='1rem' pt='0.5rem'>
-                <FlexBetween gap='.1rem'>
+            <FlexBetween gap='0.5rem' pt='0.5rem'>
+                <FlexBetween gap='0.1rem'>
                     <IconButton onClick={() => setIsImage(!isImage)}>
                         <ImageOutlined sx={{ color: medium }} />
                     </IconButton>
@@ -125,7 +120,7 @@ const CreatePostCard = () => {
                     </IconButton>
                     <Typography color={medium}>Audio</Typography>
                 </FlexBetween>
-                <FlexBetween gap='0.1rem'>
+                <FlexBetween>
                     <Button
                         onClick={handleUploadPost}
                         sx={{

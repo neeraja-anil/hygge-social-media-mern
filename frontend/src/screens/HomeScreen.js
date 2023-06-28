@@ -1,21 +1,30 @@
 import { Box, useMediaQuery } from '@mui/material'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useGetUserQuery } from '../redux/usersApiSlice';
+import { setUser } from '../redux/authSlice';
 import Navbar from '../components/Navbar';
 import ProfileCard from '../homeCards/ProfileCard';
 import CreatePostCard from '../homeCards/CreatePostCard';
+import PostsCard from '../homeCards/PostsCard';
+import PostFeed from '../homeCards/PostFeed';
 
 const HomeScreen = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
+    const { data: userInfo, isLoading, error } = useGetUserQuery(user._id)
+
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
 
     useEffect(() => {
         if (!user) {
             navigate('/')
+        } else {
+            userInfo && dispatch(setUser(userInfo))
         }
-    }, [user, navigate])
+    }, [user, userInfo, navigate, dispatch])
 
     return (
         <Box>
@@ -32,6 +41,9 @@ const HomeScreen = () => {
                 </Box>
                 <Box flexBasis={isNonMobileScreens ? '50%' : ''} mt={isNonMobileScreens ? '' : '2rem'}>
                     <CreatePostCard />
+                    <Box gap='1rem' padding='1rem 0'>
+                        <PostFeed />
+                    </Box>
                 </Box>
             </Box>
 
