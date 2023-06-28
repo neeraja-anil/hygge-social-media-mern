@@ -23,9 +23,6 @@ const Navbar = () => {
     const { user } = useSelector((state) => state.auth)
     const fullName = user ? `${user.firstName} ${user.lastName}` : ''
 
-    const click = () => {
-        console.log('first')
-    }
     return (
         <FlexBetween padding='1rem 6%' backgroundColor={alt} >
             <FlexBetween gap='1.75rem'>

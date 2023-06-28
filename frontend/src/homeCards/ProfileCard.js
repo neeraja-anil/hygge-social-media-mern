@@ -4,14 +4,11 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import CardWrapper from '../components/CardWrapper'
 import FlexBetween from '../components/FlexBetween'
-import { LocationOnOutlined, ManageAccountsOutlined, PersonAddAlt, WorkOutlineOutlined } from '@mui/icons-material'
+import { LocationOnOutlined, ManageAccountsOutlined, WorkOutlineOutlined } from '@mui/icons-material'
 
 const ProfileCard = () => {
 
     const theme = useTheme()
-    const neutralLight = theme.palette.neutral.light
-    const neutralDark = theme.palette.neutral.dark
-    const background = theme.palette.background.default
     const primaryLight = theme.palette.primary.light
     const alt = theme.palette.background.alt
     const medium = theme.palette.neutral.medium
@@ -23,7 +20,7 @@ const ProfileCard = () => {
     if (!user) {
         return null
     }
-    const { _id, firstName, lastName, picturePath, friends, location, occupation, viewedProfiles, impressions } = user
+    const { _id, firstName, lastName, picturePath, friends, followers, location, occupation, viewedProfiles, impressions } = user
     return (
         <CardWrapper >
             <FlexBetween
@@ -47,7 +44,7 @@ const ProfileCard = () => {
                         >
                             {firstName} {lastName}
                         </Typography>
-                        <Typography color={medium}>{friends.length} friends</Typography>
+                        <Typography color={medium}>{followers && followers.length} followers</Typography>
                     </Box>
                 </FlexBetween>
                 <ManageAccountsOutlined sx={{

@@ -36,7 +36,8 @@ const getUserFriends = asyncHandler(async (req, res) => {
 //@route  PUT /api/users/:id/friends
 //@access private
 const addRemoveFriend = asyncHandler(async (req, res) => {
-    if (req.user._id !== req.params.id) {
+
+    if (!req.user._id.equals(req.params.id)) {
         try {
             const friend = await User.findById(req.params.id)
             const user = await User.findById(req.user._id)
