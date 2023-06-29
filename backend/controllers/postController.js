@@ -88,4 +88,26 @@ const getAllPosts = asyncHandler(async (req, res) => {
     res.status(200).json(allPosts)
 })
 
-export { createNewPost, getPostById, deletePost, getAllPosts }
+//@desc PUT like a post by id
+//@route PUT /api/post/:id/like
+//@access private
+
+const likePost = asyncHandler(async (req, res) => {
+
+    const post = await Post.findById(req.params.id)
+    if (post) {
+        if (!post.likes.includes(req.user._id)) {
+            await post.updateOne({ $push: { likes: req.user._id } })
+            res.status(200).json('you liked this post')
+        } else {
+            await post.updateOne({ $pull: { likes: req.user._id } })
+            res.status(200).json('you unliked this post')
+        }
+
+    } else {
+        throw new Error('post not found')
+    }
+})
+
+
+export { createNewPost, getPostById, deletePost, getAllPosts, likePost }
