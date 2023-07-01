@@ -109,5 +109,28 @@ const likePost = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc PUT add a comment
+//@route PUT /api/post/:id/comment
+//@access private
 
-export { createNewPost, getPostById, deletePost, getAllPosts, likePost }
+const commentPost = asyncHandler(async (req, res) => {
+    const { comment } = req.body
+    const post = await Post.findById(req.params.id)
+    if (post) {
+        const comments = {
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            comment,
+            user: req.user._id,
+            picturePath: req.user.picturePath
+        }
+        post.comments.push(comments)
+        await post.save()
+        res.status(201).json('comment added')
+    } else {
+        throw new Error('post not found')
+    }
+})
+
+
+export { createNewPost, getPostById, deletePost, getAllPosts, likePost, commentPost }

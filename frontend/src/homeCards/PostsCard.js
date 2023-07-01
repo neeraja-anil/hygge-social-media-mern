@@ -43,6 +43,9 @@ const PostsCard = ({ post }) => {
         toast.success(res)
     }
 
+    const commentHandler = () => {
+        console.log('cmt')
+    }
     useEffect(() => {
         if (!user) {
             navigate('/')
@@ -80,6 +83,15 @@ const PostsCard = ({ post }) => {
                         }}
                     />
                 </Box>
+                <FlexBetween gap='1rem'>
+                    {post.likes.length !== 0 && (
+                        <FlexBetween gap='0.1rem'>
+                            <FavoriteBorder sx={{ color: '#991818', fontSize: '12px' }} />
+                            <Typography color={medium} sx={{ fontSize: '12px' }}>{post.likes.length}</Typography>
+                        </FlexBetween>
+                    )}
+                </FlexBetween>
+
                 <Divider />
                 <FlexBetween gap='1rem'>
                     <FlexBetween gap='2rem'>
@@ -90,13 +102,28 @@ const PostsCard = ({ post }) => {
                             <Typography>Like</Typography>
                         </FlexBetween>
                         <FlexBetween>
-                            <IconButton>
+                            <IconButton onClick={commentHandler}>
                                 <Chat></Chat>
                             </IconButton>
                             <Typography>Comment</Typography>
                         </FlexBetween>
                     </FlexBetween>
                 </FlexBetween>
+
+                {/* <FlexBetween gap='1rem' pb='0.5rem'>
+                <Avatar src={user && user.picturePath} />
+                <InputBase
+                    placeholder='New Post'
+                    value={post}
+                    onChange={(e) => setPost(e.target.value)}
+                    sx={{
+                        width: '100%',
+                        borderRadius: '20px',
+                        padding: '0.5rem 1.5rem',
+                        backgroundColor: neutralLight,
+                    }}
+                />
+            </FlexBetween> */}
             </CardWrapper>
         </Box>
 
