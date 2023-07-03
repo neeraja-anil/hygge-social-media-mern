@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Typography, useTheme, Avatar, useMediaQuery, CircularProgress, IconButton, Divider } from '@mui/material'
-import { Chat, Favorite, FavoriteBorder, PersonAddAlt, PersonRemove } from '@mui/icons-material'
+import { Box, Typography, useTheme, Avatar, useMediaQuery, CircularProgress, IconButton, Divider, InputBase, colors } from '@mui/material'
+import { Chat, Favorite, FavoriteBorder, MoreVert, PersonAddAlt, PersonRemove, SendOutlined, Share } from '@mui/icons-material'
 import { useAddRemoveFriendMutation } from '../redux/usersApiSlice'
-import { useLikePostMutation } from '../redux/postApiSlice'
+import { useLikePostMutation, useCommentPostMutation } from '../redux/postApiSlice'
 import { useGetUserQuery } from '../redux/usersApiSlice'
 import { setUser } from '../redux/authSlice';
 import CardWrapper from '../components/CardWrapper'
@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const PostsCard = ({ post }) => {
+    const [comment, setComment] = useState('')
+    const [isComment, setIsComment] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
@@ -23,12 +25,14 @@ const PostsCard = ({ post }) => {
 
     const theme = useTheme()
     const medium = theme.palette.neutral.medium
+    const neutralLight = theme.palette.neutral.light
     const isMobileScreens = useMediaQuery('(max-width:900px)')
 
     // REDUX APIS
     const { data: userInfo, error } = useGetUserQuery(user._id)
     const [addRemoveFriend] = useAddRemoveFriendMutation()
     const [likePost, { isLoading }] = useLikePostMutation()
+    const [commentPost] = useCommentPostMutation()
 
     const addFriendHandler = async () => {
         const id = post.user
@@ -42,9 +46,12 @@ const PostsCard = ({ post }) => {
         const res = await likePost(postId).unwrap()
         toast.success(res)
     }
-
-    const commentHandler = () => {
-        console.log('cmt')
+    const addCommentHandler = async () => {
+        const postId = post._id
+        console.log('cmt', comment)
+        const res = await commentPost({ comment, postId }).unwrap()
+        console.log(res)
+        setComment('')
     }
     useEffect(() => {
         if (!user) {
@@ -102,28 +109,66 @@ const PostsCard = ({ post }) => {
                             <Typography>Like</Typography>
                         </FlexBetween>
                         <FlexBetween>
-                            <IconButton onClick={commentHandler}>
+                            <IconButton onClick={() => setIsComment(!isComment)}>
                                 <Chat></Chat>
                             </IconButton>
                             <Typography>Comment</Typography>
                         </FlexBetween>
                     </FlexBetween>
                 </FlexBetween>
+                {isComment && (
+                    <>
+                        <FlexBetween gap='1rem' pt='0.5rem'>
+                            <Avatar src='' sx={{ width: 25, height: 25 }} />
+                            <InputBase
+                                placeholder='Add a comment'
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                sx={{
+                                    width: '100%',
+                                    borderRadius: '20px',
+                                    padding: '0.2rem 1.5rem',
+                                    backgroundColor: neutralLight
+                                }}
+                            />
+                            <IconButton onClick={addCommentHandler}>
+                                <SendOutlined />
+                            </IconButton>
+                        </FlexBetween>
+                        {post.comments.map(comment => (
+                            <Box padding='0.2rem 0' pt='1.1rem' key={comment.user}>
+                                <FlexBetween gap='1rem'>
+                                    <Avatar src={comment.picturePath} sx={{ width: 25, height: 25 }} />
 
-                {/* <FlexBetween gap='1rem' pb='0.5rem'>
-                <Avatar src={user && user.picturePath} />
-                <InputBase
-                    placeholder='New Post'
-                    value={post}
-                    onChange={(e) => setPost(e.target.value)}
-                    sx={{
-                        width: '100%',
-                        borderRadius: '20px',
-                        padding: '0.5rem 1.5rem',
-                        backgroundColor: neutralLight,
-                    }}
-                />
-            </FlexBetween> */}
+                                    <Box padding='0.5rem' backgroundColor={neutralLight} borderRadius='10px' sx={{ width: '100%' }}>
+                                        <FlexBetween gap='1rem'>
+                                            <FlexBetween>
+                                                <Typography fontWeight='600'>{comment.firstName} {comment.lastName}</Typography>
+                                            </FlexBetween>
+                                            <FlexBetween>
+                                                <Typography sx={{ fontSize: '12px', color: medium }}>
+                                                    {moment(comment.createdAt).fromNow()}
+                                                </Typography>
+                                                <IconButton>
+                                                    <MoreVert />
+                                                </IconButton>
+                                            </FlexBetween>
+
+                                        </FlexBetween>
+                                        <FlexBetween>
+                                            <Typography>{comment.comment}</Typography>
+                                        </FlexBetween>
+                                    </Box>
+
+
+                                </FlexBetween>
+
+                            </Box>
+
+                        ))}
+                    </>
+                )}
+
             </CardWrapper>
         </Box>
 

@@ -24,8 +24,16 @@ export const postApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Post']
         }),
+        commentPost: builder.mutation({
+            query: (data) => ({
+                url: `/api/posts/${data.postId}/comment`,
+                method: 'PUT',
+                body: data
+            }),
+            invalidatesTags: ['Post']
+        }),
 
     })
 })
 
-export const { usePostsQuery, useCreateNewPostMutation, useLikePostMutation } = postApiSlice
+export const { usePostsQuery, useCreateNewPostMutation, useLikePostMutation, useCommentPostMutation } = postApiSlice
