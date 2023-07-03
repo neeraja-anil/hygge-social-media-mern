@@ -24,7 +24,7 @@ const Navbar = () => {
     const fullName = user ? `${user.firstName} ${user.lastName}` : ''
 
     return (
-        <FlexBetween padding='1rem 6%' backgroundColor={alt} >
+        <FlexBetween padding='1rem 6%' backgroundColor={alt} sx={{ position: "sticky", top: 0, zIndex: 1000 }}>
             <FlexBetween gap='1.75rem'>
                 <Typography
                     fontWeight='bold'

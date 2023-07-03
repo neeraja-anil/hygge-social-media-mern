@@ -37,7 +37,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['User']
         }),
+        getFriend: builder.query({
+            query: (id) => ({
+                url: `/api/users/${id}/friends`,
+                method: 'GET',
+            }),
+            providesTags: ['User']
+        }),
     }),
 })
 
-export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation } = usersApiSlice
+export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation, useGetFriendQuery } = usersApiSlice

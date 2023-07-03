@@ -26,8 +26,8 @@ const getUserFriends = asyncHandler(async (req, res) => {
         user.friends.map((id) => User.findById(id).select('-password'))
     )
 
-    const formattedFriends = friends.map(({ _id, firstName, lastName, PicturePath, posts }) => {
-        return { _id, firstName, lastName, PicturePath, posts }
+    const formattedFriends = friends.map(({ _id, firstName, lastName, picturePath, posts }) => {
+        return { _id, firstName, lastName, picturePath, posts }
     })
     res.json(formattedFriends)
 })

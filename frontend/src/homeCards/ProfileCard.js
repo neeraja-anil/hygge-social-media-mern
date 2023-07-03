@@ -22,7 +22,7 @@ const ProfileCard = () => {
     }
     const { _id, firstName, lastName, picturePath, friends, followers, location, occupation, viewedProfiles, impressions } = user
     return (
-        <CardWrapper >
+        <CardWrapper sx={{ position: "fixed" }}>
             <FlexBetween
                 gap='1rem'
                 pb='1.1rem'
