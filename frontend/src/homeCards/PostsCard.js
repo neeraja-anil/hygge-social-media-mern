@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Typography, useTheme, Avatar, useMediaQuery, CircularProgress, IconButton, Divider, InputBase, colors } from '@mui/material'
-import { Chat, Favorite, FavoriteBorder, MoreVert, PersonAddAlt, PersonRemove, SendOutlined, Share } from '@mui/icons-material'
+import { Box, Typography, useTheme, Avatar, IconButton, Divider, InputBase } from '@mui/material'
+import { Chat, Favorite, FavoriteBorder, MoreVert, PersonAddAlt, PersonRemove, SendOutlined } from '@mui/icons-material'
 import { useAddRemoveFriendMutation } from '../redux/usersApiSlice'
 import { useLikePostMutation, useCommentPostMutation } from '../redux/postApiSlice'
 import { useGetUserQuery } from '../redux/usersApiSlice'
@@ -26,7 +26,7 @@ const PostsCard = ({ post }) => {
     const theme = useTheme()
     const medium = theme.palette.neutral.medium
     const neutralLight = theme.palette.neutral.light
-    const isMobileScreens = useMediaQuery('(max-width:900px)')
+    const primaryLight = theme.palette.primary.light
 
     // REDUX APIS
     const { data: userInfo, error } = useGetUserQuery(user._id)
@@ -63,16 +63,21 @@ const PostsCard = ({ post }) => {
         <Box padding='0.2rem 0'>
             <CardWrapper>
                 <FlexBetween gap='1rem' pb='1.1rem'>
-                    <FlexBetween gap='1rem'>
+                    <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${post.user}`)} sx={{ '&:hover': { cursor: 'pointer' } }}>
                         <Avatar src={post.picturePath} />
-                        <Box>
+                        <Box >
                             <Typography>{post.firstName} {post.lastName}</Typography>
                             <Typography color={medium}>{postCreated}</Typography>
                         </Box>
 
                     </FlexBetween>
                     <FlexBetween gap='1rem'>
-                        <IconButton onClick={addFriendHandler}>
+                        <IconButton onClick={addFriendHandler} sx={{
+                            "&:hover": {
+                                backgroundColor: primaryLight,
+                                cursor: 'pointer'
+                            }
+                        }}>
                             {user.friends.includes(post.user) ? <PersonRemove /> : <PersonAddAlt />}
                         </IconButton>
                     </FlexBetween>
@@ -141,7 +146,7 @@ const PostsCard = ({ post }) => {
                                     <Avatar src={comment.picturePath} sx={{ width: 25, height: 25 }} />
 
                                     <Box padding='0.5rem' backgroundColor={neutralLight} borderRadius='10px' sx={{ width: '100%' }}>
-                                        <FlexBetween gap='1rem' onClick={() => navigate(`/${comment.user}/profile`)}>
+                                        <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${comment.user}`)}>
                                             <FlexBetween>
                                                 <Typography fontWeight='600'>{comment.firstName} {comment.lastName}</Typography>
                                             </FlexBetween>

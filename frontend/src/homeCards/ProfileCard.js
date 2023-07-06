@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, useTheme, Avatar, Typography, Divider, useMediaQuery } from '@mui/material'
+import { Box, useTheme, Avatar, Typography, Divider, IconButton } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import CardWrapper from '../components/CardWrapper'
@@ -10,9 +10,7 @@ const ProfileCard = () => {
 
     const theme = useTheme()
     const primaryLight = theme.palette.primary.light
-    const alt = theme.palette.background.alt
     const medium = theme.palette.neutral.medium
-    const isMobileScreens = useMediaQuery('(max-width:900px)')
 
     const navigate = useNavigate()
     const { user } = useSelector((state) => state.auth)
@@ -20,9 +18,9 @@ const ProfileCard = () => {
     if (!user) {
         return null
     }
-    const { _id, firstName, lastName, picturePath, friends, followers, location, occupation, viewedProfiles, impressions } = user
+    const { _id, firstName, lastName, picturePath, followers, location, occupation, viewedProfiles, impressions } = user
     return (
-        <CardWrapper sx={!isMobileScreens && { position: "fixed" }}>
+        <CardWrapper >
             <FlexBetween
                 gap='1rem'
                 pb='1.1rem'
@@ -47,12 +45,15 @@ const ProfileCard = () => {
                         <Typography color={medium}>{followers && followers.length} followers</Typography>
                     </Box>
                 </FlexBetween>
-                <ManageAccountsOutlined sx={{
+                <IconButton sx={{
                     "&:hover": {
-                        color: primaryLight,
+                        backgroundColor: primaryLight,
                         cursor: 'pointer'
                     }
-                }} />
+                }}>
+                    <ManageAccountsOutlined />
+                </IconButton>
+
             </FlexBetween>
             <Divider />
             <FlexBetween

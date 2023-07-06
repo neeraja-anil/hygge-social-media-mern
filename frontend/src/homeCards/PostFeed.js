@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { usePostsQuery } from '../redux/postApiSlice'
-import { setPosts } from '../redux/postSlice'
-import { useDispatch } from 'react-redux'
-import { CircularProgress } from '@mui/material'
+import { CircularProgress, Typography, useTheme } from '@mui/material'
 import PostsCard from './PostsCard'
 
 const PostFeed = () => {
-    const dispatch = useDispatch()
     const { data: posts, isLoading, isError } = usePostsQuery()
-
+    const theme = useTheme()
     return (
         <>
             {isLoading ? (
                 <CircularProgress />
+            ) : isError ? (
+                <Typography sx={{ color: theme.palette.neutral.medium }}>Something Went Wrong</Typography>
             ) : (
                 posts.map(post => (
                     <PostsCard post={post} key={post._id} />
