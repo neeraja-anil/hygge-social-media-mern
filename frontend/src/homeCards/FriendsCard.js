@@ -1,7 +1,7 @@
 import React from 'react'
 import CardWrapper from '../components/CardWrapper'
 import { useGetFriendQuery } from '../redux/usersApiSlice'
-import { Avatar, Box, CircularProgress, IconButton, Typography } from '@mui/material'
+import { Avatar, Box, CircularProgress, IconButton, Typography, useMediaQuery } from '@mui/material'
 import { useSelector } from 'react-redux'
 import FlexBetween from '../components/FlexBetween'
 import { PersonAddAlt, PersonRemove } from '@mui/icons-material'
@@ -12,6 +12,7 @@ const FriendsCard = () => {
     const { user } = useSelector(state => state.auth)
     const { data: friends, isLoading, isError } = useGetFriendQuery(user._id)
     const [addRemoveFriend] = useAddRemoveFriendMutation()
+    const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
 
     const addFriendHandler = async (id) => {
         const res = await addRemoveFriend(id).unwrap()
@@ -23,7 +24,7 @@ const FriendsCard = () => {
             {isLoading ? (
                 <CircularProgress />
             ) : (
-                <CardWrapper sx={{ position: "fixed" }}>
+                <CardWrapper>
                     <Typography variant='h4'>Friends</Typography>
                     {friends.map(friend => (
                         <Box pt='1.1rem'>

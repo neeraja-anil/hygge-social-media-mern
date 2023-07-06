@@ -10,6 +10,7 @@ import CreatePostCard from '../homeCards/CreatePostCard';
 import PostsCard from '../homeCards/PostsCard';
 import PostFeed from '../homeCards/PostFeed';
 import FriendsCard from '../homeCards/FriendsCard';
+import AdsCard from '../homeCards/AdsCard';
 
 const HomeScreen = () => {
     const navigate = useNavigate()
@@ -47,7 +48,11 @@ const HomeScreen = () => {
                     </Box>
                 </Box>
                 <Box flexBasis={isNonMobileScreens ? '25%' : ''}>
-                    <FriendsCard />
+                    <AdsCard />
+                    <Box gap='1rem' padding='1rem 0' sx={isNonMobileScreens && { position: 'sticky', top: '96px' }}>
+                        <FriendsCard />
+                    </Box>
+
                 </Box>
             </Box>
 

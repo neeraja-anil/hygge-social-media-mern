@@ -119,7 +119,7 @@ const PostsCard = ({ post }) => {
                 {isComment && (
                     <>
                         <FlexBetween gap='1rem' pt='0.5rem'>
-                            <Avatar src='' sx={{ width: 25, height: 25 }} />
+                            <Avatar src={user.picturePath} sx={{ width: 25, height: 25 }} />
                             <InputBase
                                 placeholder='Add a comment'
                                 value={comment}
@@ -141,7 +141,7 @@ const PostsCard = ({ post }) => {
                                     <Avatar src={comment.picturePath} sx={{ width: 25, height: 25 }} />
 
                                     <Box padding='0.5rem' backgroundColor={neutralLight} borderRadius='10px' sx={{ width: '100%' }}>
-                                        <FlexBetween gap='1rem'>
+                                        <FlexBetween gap='1rem' onClick={() => navigate(`/${comment.user}/profile`)}>
                                             <FlexBetween>
                                                 <Typography fontWeight='600'>{comment.firstName} {comment.lastName}</Typography>
                                             </FlexBetween>
