@@ -88,6 +88,17 @@ const getAllPosts = asyncHandler(async (req, res) => {
     res.status(200).json(allPosts)
 })
 
+//@desc Get all user posts
+//@route GET /api/post/user/:id
+//@access private
+
+const getUserPosts = asyncHandler(async (req, res) => {
+
+    const user = await User.findById(req.params.id)
+    const userPosts = await Post.find({ user: user._id }).sort({ createdAt: -1 })
+    res.status(200).json(userPosts)
+})
+
 //@desc PUT like a post by id
 //@route PUT /api/post/:id/like
 //@access private
@@ -133,4 +144,4 @@ const commentPost = asyncHandler(async (req, res) => {
     }
 })
 
-export { createNewPost, getPostById, deletePost, getAllPosts, likePost, commentPost }
+export { createNewPost, getPostById, deletePost, getAllPosts, getUserPosts, likePost, commentPost }

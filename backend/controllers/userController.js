@@ -7,7 +7,7 @@ import User from '../models/userModel.js'
 
 const getUser = asyncHandler(async (req, res) => {
 
-    const user = await User.findById(req.user._id).select('-password')
+    const user = await User.findById(req.params.id).select('-password')
     if (user) {
         res.status(200).json(user)
     } else {

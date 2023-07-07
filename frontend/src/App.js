@@ -10,6 +10,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import VerifyUserRegScreen from './screens/VerifyUserRegScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import { CssBaseline } from '@mui/material';
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/register' element={<RegisterScreen />} />
           <Route path='/verify' element={<VerifyUserRegScreen />} />
           <Route path='/home' element={<HomeScreen />} />
+          <Route path='/profile/:id' element={<ProfileScreen />} />
         </Routes>
         <ToastContainer />
       </ThemeProvider>
