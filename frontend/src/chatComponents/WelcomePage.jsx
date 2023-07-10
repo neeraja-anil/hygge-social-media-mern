@@ -4,9 +4,9 @@ import FlexBetween from '../components/FlexBetween'
 import { Avatar, Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useSelector } from 'react-redux'
 
-const WelcomePage = () => {
+const WelcomePage = ({ user }) => {
     const theme = useTheme()
-    const { user } = useSelector((state) => state.auth)
+    //const { user } = useSelector((state) => state.auth)
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
 
     return (
