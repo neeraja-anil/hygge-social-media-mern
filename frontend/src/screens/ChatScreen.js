@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import FriendsSideBar from '../chatComponents/FriendsSideBar'
-import { Box, useMediaQuery } from '@mui/material'
+import { Box, Divider, Typography, useMediaQuery } from '@mui/material'
 import WelcomePage from '../chatComponents/WelcomePage'
 import ChatPage from '../chatComponents/ChatPage'
 import { useSelector } from 'react-redux'
+import FlexBetween from '../components/FlexBetween'
+import CardWrapper from '../components/CardWrapper'
 
 const ChatScreen = () => {
     const [currentChat, setCurrentChat] = useState(null)
@@ -22,22 +24,29 @@ const ChatScreen = () => {
                 justifyContent='space-between'
                 width='100%'
                 gap='1rem'
-                padding='2rem 5%'
+                padding='1rem 5%'
             >
-                <Box flexBasis={isNonMobileScreens ? '25%' : ''}>
-                    <FriendsSideBar user={user} changeChat={handleChangeChat} />
-                </Box>
+                {isNonMobileScreens ? (
+                    <Box flexBasis={isNonMobileScreens ? '25%' : ''}>
+                        <FriendsSideBar user={user} changeChat={handleChangeChat} />
+                    </Box>
+                ) : (
+                    <Typography>hi</Typography>
+                )}
+
                 {!currentChat ? (
-                    <Box flexBasis={isNonMobileScreens ? '75%' : ''}>
+                    <Box flexBasis={isNonMobileScreens ? '75%' : '100%'}>
                         <WelcomePage user={user} />
                     </Box>
                 ) : (
-                    <Box flexBasis={isNonMobileScreens ? '75%' : ''}>
+                    <Box flexBasis={isNonMobileScreens ? '75%' : '100%'}>
                         <ChatPage user={user} chat={currentChat} />
                     </Box>
                 )}
 
-            </Box>
+            </Box >
+
+
         </>
     )
 }

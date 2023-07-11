@@ -6,13 +6,12 @@ import morgan from 'morgan'
 import path from 'path'
 import bodyParser from 'body-parser'
 import fs from 'fs'
-import multer from 'multer'
 import connectDB from './config/db.js'
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 import authUsersRoutes from './routes/authUsersRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import postRoutes from './routes/postRoutes.js'
-import { upload } from './utils/multer.js'
+import conversationRoutes from './routes/conversationRoutes.js'
 
 
 // configurations
@@ -37,6 +36,7 @@ app.use(cors())
 app.use('/api/auth/users', authUsersRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/posts', postRoutes)
+app.use('/api/conversations', conversationRoutes)
 
 //STATIC FILES
 

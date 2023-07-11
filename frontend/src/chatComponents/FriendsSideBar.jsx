@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Box, CircularProgress, IconButton, Typography, useTheme } from '@mui/material'
+import { Avatar, Box, CircularProgress, IconButton, Typography, useTheme, useMediaQuery } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import CardWrapper from '../components/CardWrapper'
@@ -11,6 +11,8 @@ const FriendsSideBar = ({ user, changeChat }) => {
     const { data: friends, isLoading, isError } = useGetFriendQuery(user._id)
     const theme = useTheme()
     const navigate = useNavigate()
+    const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
+
 
     const handleChatChange = (friend) => {
         changeChat(friend)
@@ -43,14 +45,22 @@ const FriendsSideBar = ({ user, changeChat }) => {
                                         },
                                     }}
                                 >
-                                    <FlexBetween gap='1rem' pb='0.1rem'>
-                                        <FlexBetween gap='1rem' sx={{ '&:hover': { cursor: 'pointer' } }}>
-                                            <Avatar src={friend.picturePath} />
-                                            <Box>
-                                                <Typography>{friend.firstName} {friend.lastName}</Typography>
-                                            </Box>
+                                    {isNonMobileScreens ? (
+                                        <FlexBetween gap='1rem' pb='0.1rem'>
+                                            <FlexBetween gap='1rem' sx={{ '&:hover': { cursor: 'pointer' } }}>
+                                                <Avatar src={friend.picturePath} />
+                                                <Box>
+                                                    <Typography>{friend.firstName} {friend.lastName}</Typography>
+                                                </Box>
+                                            </FlexBetween>
                                         </FlexBetween>
-                                    </FlexBetween>
+                                    ) : (
+                                        <Box>
+                                            <Avatar src={friend.picturePath} />
+                                        </Box>
+
+                                    )}
+
                                 </Box>
                             </Box>
                         ))

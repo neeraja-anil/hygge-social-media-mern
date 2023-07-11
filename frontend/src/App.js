@@ -13,6 +13,7 @@ import VerifyUserRegScreen from './screens/VerifyUserRegScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { CssBaseline } from '@mui/material';
 import ChatScreen from './screens/ChatScreen';
+import ChatPage from './chatComponents/ChatPage';
 
 
 function App() {
