@@ -19,27 +19,23 @@ const ChatScreen = () => {
     return (
         <>
             <Navbar />
+            {/* {isNonMobileScreens ? ( */}
             <Box
-                display={isNonMobileScreens ? 'flex' : 'block'}
+                display='flex'
                 justifyContent='space-between'
                 width='100%'
                 gap='1rem'
                 padding='1rem 5%'
             >
-                {isNonMobileScreens ? (
-                    <Box flexBasis={isNonMobileScreens ? '25%' : ''}>
-                        <FriendsSideBar user={user} changeChat={handleChangeChat} />
-                    </Box>
-                ) : (
-                    <Typography>hi</Typography>
-                )}
-
+                <Box flexBasis={isNonMobileScreens ? '25%' : '15%'}>
+                    <FriendsSideBar user={user} changeChat={handleChangeChat} />
+                </Box>
                 {!currentChat ? (
-                    <Box flexBasis={isNonMobileScreens ? '75%' : '100%'}>
+                    <Box flexBasis={isNonMobileScreens ? '75%' : '85%'}>
                         <WelcomePage user={user} />
                     </Box>
                 ) : (
-                    <Box flexBasis={isNonMobileScreens ? '75%' : '100%'}>
+                    <Box flexBasis={isNonMobileScreens ? '75%' : '85%'}>
                         <ChatPage user={user} chat={currentChat} />
                     </Box>
                 )}

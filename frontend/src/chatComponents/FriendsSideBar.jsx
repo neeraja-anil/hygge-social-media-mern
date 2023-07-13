@@ -11,7 +11,7 @@ const FriendsSideBar = ({ user, changeChat }) => {
     const { data: friends, isLoading, isError } = useGetFriendQuery(user._id)
     const theme = useTheme()
     const navigate = useNavigate()
-    const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
+    const isNonMobileScreens = useMediaQuery('(min-width:768px)')
 
 
     const handleChatChange = (friend) => {
@@ -28,9 +28,9 @@ const FriendsSideBar = ({ user, changeChat }) => {
                     <Typography sx={{ color: theme.palette.neutral.medium }}>Cannot load friends details.try again</Typography>
                 </CardWrapper>
             ) : (
-                <CardWrapper>
+                <CardWrapper sx={{ padding: '0.5rem' }}>
                     {/* <Typography variant='h4'>Friends</Typography > */}
-                    {
+                    {isNonMobileScreens ?
                         friends.map(friend => (
                             <Box pt='1.1rem' key={friend._id}>
                                 <Box
@@ -45,25 +45,23 @@ const FriendsSideBar = ({ user, changeChat }) => {
                                         },
                                     }}
                                 >
-                                    {isNonMobileScreens ? (
-                                        <FlexBetween gap='1rem' pb='0.1rem'>
-                                            <FlexBetween gap='1rem' sx={{ '&:hover': { cursor: 'pointer' } }}>
-                                                <Avatar src={friend.picturePath} />
-                                                <Box>
-                                                    <Typography>{friend.firstName} {friend.lastName}</Typography>
-                                                </Box>
-                                            </FlexBetween>
-                                        </FlexBetween>
-                                    ) : (
-                                        <Box>
+                                    <FlexBetween gap='1rem' pb='0.1rem'>
+                                        <FlexBetween gap='1rem' sx={{ '&:hover': { cursor: 'pointer' } }}>
                                             <Avatar src={friend.picturePath} />
-                                        </Box>
-
-                                    )}
-
+                                            <Box>
+                                                <Typography>{friend.firstName} {friend.lastName}</Typography>
+                                            </Box>
+                                        </FlexBetween>
+                                    </FlexBetween>
                                 </Box>
                             </Box>
-                        ))
+                        )) : (
+                            friends.map(friend => (
+                                <Box p='0.2rem' key={friend._id} onClick={() => handleChatChange(friend)}>
+                                    <Avatar src={friend.picturePath} sx={{ width: 25, height: 25 }} />
+                                </Box>
+                            ))
+                        )
                     }
                 </CardWrapper >
             )}

@@ -32,7 +32,7 @@ const ChatInput = ({ handleSendMessage }) => {
                 gap='0.1rem'
                 pt='0.5rem'
                 sx={{
-                    position: 'relative',
+
                     border: `0.5px solid ${theme.palette.neutral.light}`,
                     borderRadius: '0.75rem', p: '0.1rem'
                 }}

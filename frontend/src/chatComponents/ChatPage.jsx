@@ -18,42 +18,93 @@ const ChatPage = ({ user, chat }) => {
     }
     console.log(chat)
     return (
-        <CardWrapper>
-            <Box
-                //backgroundColor={theme.palette.primary.light}
-                borderRadius='0.75rem'
-                padding='0.5rem'
-                minHeight='70vh'
-                display='flex'
-                flexDirection='column'
-                justifyContent='space-between'
-            >
-                <Box>
-                    <FlexBetween gap='1rem' pb='1rem'>
-                        <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${chat._id}`)}>
-                            <Avatar src={chat.picturePath} />
-                            <Typography sx={{ fontWeight: 'bold' }}>{chat.firstName} {chat.lastName}</Typography>
+        <>
+            {isNonMobileScreens ? (
+                <CardWrapper>
+                    <Box
+                        //backgroundColor={theme.palette.primary.light}
+                        borderRadius='0.75rem'
+                        padding='0.5rem'
+                        minHeight='75vh'
+                        maxHeight='100vh'
+                        display='flex'
+                        flexDirection='column'
+                        justifyContent='space-between'
+                    >
+                        <Box>
+                            <FlexBetween gap='1rem' pb='1rem'>
+                                <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${chat._id}`)}>
+                                    <Avatar src={chat.picturePath} />
+                                    <Typography sx={{ fontWeight: 'bold' }}>{chat.firstName} {chat.lastName}</Typography>
+                                </FlexBetween>
+                                <FlexBetween>
+                                    <IconButton>
+                                        <ErrorOutline />
+                                    </IconButton>
+                                </FlexBetween>
+                            </FlexBetween>
+                            <Divider />
+                        </Box>
+                        <MessageContainer>
+                            <Message />
+                            <Message own={true} />
+                            <Message />
+                            <Message own={true} />
+                            <Message />
+                        </MessageContainer>
+                        <Box>
+                            <ChatInput user={user} handleSendMessage={handleSendMessage} />
+                        </Box>
+                    </Box>
+                </CardWrapper >
+            ) : (
+                <Box
+                    //backgroundColor={theme.palette.primary.light}
+                    borderRadius='0.75rem'
+                    padding='0.5rem'
+                    minHeight='calc(100vh-198px)'
+                    maxHeight='100vh'
+                    display='flex'
+                    flexDirection='column'
+                // justifyContent='space-between'
+                >
+                    <Box>
+                        <FlexBetween gap='1rem' pb='1rem'>
+                            <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${chat._id}`)}>
+                                <Avatar src={chat.picturePath} />
+                                <Typography sx={{ fontWeight: 'bold' }}>{chat.firstName} {chat.lastName}</Typography>
+                            </FlexBetween>
+                            <FlexBetween>
+                                <IconButton>
+                                    <ErrorOutline />
+                                </IconButton>
+                            </FlexBetween>
                         </FlexBetween>
-                        <FlexBetween>
-                            <IconButton>
-                                <ErrorOutline />
-                            </IconButton>
-                        </FlexBetween>
-                    </FlexBetween>
-                    <Divider />
-                </Box>
-                <MessageContainer>
-                    <Message />
-                    <Message own={true} />
-                    <Message />
-                    <Message own={true} />
-                    <Message />
-                </MessageContainer>
-                <Box>
-                    <ChatInput user={user} handleSendMessage={handleSendMessage} />
-                </Box>
-            </Box>
-        </CardWrapper >
+                        <Divider />
+                    </Box>
+                    <MessageContainer>
+                        <Message />
+                        <Message own={true} />
+                        <Message />
+                        <Message own={true} />
+                        <Message />
+                        <Message />
+                        <Message own={true} />
+                        <Message />
+                        <Message />
+                        <Message />
+                        <Message own={true} />
+                        <Message own={true} />
+                        <Message />
+                        <Message own={true} />
+                    </MessageContainer>
+                    <Box >
+                        <ChatInput user={user} handleSendMessage={handleSendMessage} />
+                    </Box>
+                </Box >
+            )}
+
+        </>
     )
 }
 
