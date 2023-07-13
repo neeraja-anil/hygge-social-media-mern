@@ -16,11 +16,9 @@ const createConversation = asyncHandler(async (req, res) => {
     if (!senderId || !recieverId) {
         throw new Error('invalid member Ids')
     }
-    console.log('sender', senderId, 'reciever', recieverId)
     const conversation = await Conversation.create({
         members: [senderId, recieverId]
     })
-    console.log(conversation)
     res.status(201).json({
         status: 'success',
         conversation
@@ -44,7 +42,6 @@ const getUserConversations = asyncHandler(async (req, res) => {
             $in: [currUser]
         }
     })
-    console.log(conversation)
     res.status(200).json({
         status: 'success',
         conversation

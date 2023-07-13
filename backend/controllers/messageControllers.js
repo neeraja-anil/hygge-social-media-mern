@@ -16,7 +16,6 @@ const addMessage = asyncHandler(async (req, res) => {
     if (!sender) {
         throw new Error('invalid sender Id')
     }
-    console.log('sender', sender, text)
     const message = await Message.create({
         conversationId,
         sender,
@@ -38,9 +37,7 @@ const getMessages = asyncHandler(async (req, res) => {
     if (!senderId) {
         throw new Error('invalid sender Id')
     }
-    console.log(conversationId)
     const result = await Message.find({ conversationId })
-    console.log(result)
     res.status(200).json({
         status: 'success',
         result

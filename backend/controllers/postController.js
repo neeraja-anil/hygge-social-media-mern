@@ -126,7 +126,6 @@ const likePost = asyncHandler(async (req, res) => {
 
 const commentPost = asyncHandler(async (req, res) => {
     const { comment } = req.body
-    console.log(req.body)
     const post = await Post.findById(req.params.id)
     if (post) {
         const comments = {
