@@ -25,8 +25,8 @@ const ChatPage = ({ user, chat }) => {
                         //backgroundColor={theme.palette.primary.light}
                         borderRadius='0.75rem'
                         padding='0.5rem'
-                        minHeight='75vh'
-                        maxHeight='100vh'
+                        minHeight='55vh'
+                        maxHeight='calc(100vh - 160px)'
                         display='flex'
                         flexDirection='column'
                         justifyContent='space-between'
@@ -51,6 +51,11 @@ const ChatPage = ({ user, chat }) => {
                             <Message />
                             <Message own={true} />
                             <Message />
+                            <Message own={true} />
+                            <Message />
+                            <Message />
+                            <Message own={true} />
+                            <Message own={true} />
                         </MessageContainer>
                         <Box>
                             <ChatInput user={user} handleSendMessage={handleSendMessage} />
@@ -62,11 +67,10 @@ const ChatPage = ({ user, chat }) => {
                     //backgroundColor={theme.palette.primary.light}
                     borderRadius='0.75rem'
                     padding='0.5rem'
-                    minHeight='calc(100vh-198px)'
+                    minHeight='calc(100% - 200px)'
                     maxHeight='100vh'
                     display='flex'
                     flexDirection='column'
-                // justifyContent='space-between'
                 >
                     <Box>
                         <FlexBetween gap='1rem' pb='1rem'>

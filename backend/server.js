@@ -12,6 +12,7 @@ import authUsersRoutes from './routes/authUsersRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import postRoutes from './routes/postRoutes.js'
 import conversationRoutes from './routes/conversationRoutes.js'
+import messageRoutes from './routes/messageRoutes.js'
 
 
 // configurations
@@ -37,6 +38,7 @@ app.use('/api/auth/users', authUsersRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/posts', postRoutes)
 app.use('/api/conversations', conversationRoutes)
+app.use('/api/messages', messageRoutes)
 
 //STATIC FILES
 
