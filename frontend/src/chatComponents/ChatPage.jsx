@@ -11,7 +11,9 @@ import { useNavigate } from 'react-router-dom'
 import { useGetUserQuery } from '../redux/usersApiSlice'
 import { useAddMessageMutation, useGetMessageQuery } from '../redux/messageApiSlice'
 
-const ChatPage = ({ user, chat }) => {
+const ChatPage = ({ user, chat, socket }) => {
+    const [messages, setMessages] = useState([])
+    const [arrivalMsg, setArrivalMsg] = useState(null)
     const navigate = useNavigate()
     const theme = useTheme()
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
@@ -21,15 +23,43 @@ const ChatPage = ({ user, chat }) => {
     const sender = user._id
     const friendId = chat?.members?.find(friend => friend !== user._id)
     const { data: friend } = useGetUserQuery(friendId)
-    const { data: messages } = useGetMessageQuery(conversationId)
+    const { data: texts } = useGetMessageQuery(conversationId)
+
 
     const handleSendMessage = async (msg) => {
+        socket.current.emit('sendMessage', {
+            senderId: sender,
+            recieverId: friendId,
+            text: msg
+        })
         const res = await addMessage({ conversationId, sender, text: msg }).unwrap()
         console.log(res)
     }
     useEffect(() => {
+        socket.current.on('getMessage', data => {
+            setArrivalMsg({
+                sender: data.senderId,
+                text: data.text,
+                createdAt: Date.now()
+            })
+        })
+    }, [])
+
+    useEffect(() => {
+        if (texts) {
+            setMessages(texts)
+        }
+        console.log('msgs', messages)
+    }, [texts])
+
+    useEffect(() => {
+        arrivalMsg && chat?.members.includes(arrivalMsg.sender) &&
+            setMessages(prev => [...prev, arrivalMsg])
+    }, [arrivalMsg, chat])
+
+    useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages])
+    }, [messages, arrivalMsg])
 
 
     return (
@@ -61,7 +91,7 @@ const ChatPage = ({ user, chat }) => {
                             <Divider />
                         </Box>
                         <MessageContainer >
-                            {messages?.map(msg => (
+                            {messages && messages.length !== 0 && messages.map(msg => (
                                 <div key={msg._id} ref={scrollRef}>
                                     <Message message={msg} own={msg.sender === user._id} />
                                 </div>

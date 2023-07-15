@@ -44,7 +44,8 @@ const addUser = (userId, socketId) => {
 const removeUser = (socketId) => {
     users = users.filter(user => user.socketId !== socketId)
 }
-const getUser = ({ recieverId }) => {
+const getUser = (recieverId) => {
+    console.log(users)
     return users.find(user => user.userId === recieverId)
 }
 
@@ -60,7 +61,10 @@ io.on("connection", (socket) => {
 
     //Send and Recieve messages
     socket.on('sendMessage', ({ senderId, recieverId, text }) => {
+        console.log('sendMessage', senderId, recieverId, text)
+
         const reciever = getUser(recieverId)
+        console.log('reciever', reciever)
         io.to(reciever.socketId).emit('getMessage', {
             senderId,
             text
