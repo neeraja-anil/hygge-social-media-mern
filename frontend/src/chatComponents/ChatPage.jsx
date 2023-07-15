@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useRef, Fragment } from 'react'
 import CardWrapper from '../components/CardWrapper'
 import FlexBetween from '../components/FlexBetween'
 import ChatInput from './ChatInput'
@@ -8,15 +8,30 @@ import { Avatar, Box, Divider, IconButton, Typography, useMediaQuery, useTheme }
 import { ErrorOutline, SendOutlined } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useGetUserQuery } from '../redux/usersApiSlice'
+import { useAddMessageMutation, useGetMessageQuery } from '../redux/messageApiSlice'
 
 const ChatPage = ({ user, chat }) => {
     const navigate = useNavigate()
     const theme = useTheme()
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
+    const scrollRef = useRef()
+    const [addMessage] = useAddMessageMutation()
+    const conversationId = chat._id
+    const sender = user._id
+    const friendId = chat?.members?.find(friend => friend !== user._id)
+    const { data: friend } = useGetUserQuery(friendId)
+    const { data: messages } = useGetMessageQuery(conversationId)
+
     const handleSendMessage = async (msg) => {
-        alert(msg)
+        const res = await addMessage({ conversationId, sender, text: msg }).unwrap()
+        console.log(res)
     }
-    console.log(chat)
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages])
+
+
     return (
         <>
             {isNonMobileScreens ? (
@@ -33,9 +48,9 @@ const ChatPage = ({ user, chat }) => {
                     >
                         <Box>
                             <FlexBetween gap='1rem' pb='1rem'>
-                                <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${chat._id}`)}>
-                                    <Avatar src={chat.picturePath} />
-                                    <Typography sx={{ fontWeight: 'bold' }}>{chat.firstName} {chat.lastName}</Typography>
+                                <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${friend?._id}`)}>
+                                    <Avatar src={friend?.picturePath} />
+                                    <Typography sx={{ fontWeight: 'bold' }}>{friend?.firstName} {friend?.lastName}</Typography>
                                 </FlexBetween>
                                 <FlexBetween>
                                     <IconButton>
@@ -45,17 +60,12 @@ const ChatPage = ({ user, chat }) => {
                             </FlexBetween>
                             <Divider />
                         </Box>
-                        <MessageContainer>
-                            <Message />
-                            <Message own={true} />
-                            <Message />
-                            <Message own={true} />
-                            <Message />
-                            <Message own={true} />
-                            <Message />
-                            <Message />
-                            <Message own={true} />
-                            <Message own={true} />
+                        <MessageContainer >
+                            {messages?.map(msg => (
+                                <div key={msg._id} ref={scrollRef}>
+                                    <Message message={msg} own={msg.sender === user._id} />
+                                </div>
+                            ))}
                         </MessageContainer>
                         <Box>
                             <ChatInput user={user} handleSendMessage={handleSendMessage} />
@@ -74,9 +84,9 @@ const ChatPage = ({ user, chat }) => {
                 >
                     <Box>
                         <FlexBetween gap='1rem' pb='1rem'>
-                            <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${chat._id}`)}>
-                                <Avatar src={chat.picturePath} />
-                                <Typography sx={{ fontWeight: 'bold' }}>{chat.firstName} {chat.lastName}</Typography>
+                            <FlexBetween gap='1rem' onClick={() => navigate(`/profile/${friend._id}`)}>
+                                <Avatar src={friend.picturePath} />
+                                <Typography sx={{ fontWeight: 'bold' }}>{friend.firstName} {friend.lastName}</Typography>
                             </FlexBetween>
                             <FlexBetween>
                                 <IconButton>
@@ -87,20 +97,9 @@ const ChatPage = ({ user, chat }) => {
                         <Divider />
                     </Box>
                     <MessageContainer>
-                        <Message />
-                        <Message own={true} />
-                        <Message />
-                        <Message own={true} />
-                        <Message />
-                        <Message />
-                        <Message own={true} />
-                        <Message />
-                        <Message />
-                        <Message />
-                        <Message own={true} />
-                        <Message own={true} />
-                        <Message />
-                        <Message own={true} />
+                        {messages?.map(msg => (
+                            <Message message={msg} own={msg.sender === user._id} />
+                        ))}
                     </MessageContainer>
                     <Box >
                         <ChatInput user={user} handleSendMessage={handleSendMessage} />

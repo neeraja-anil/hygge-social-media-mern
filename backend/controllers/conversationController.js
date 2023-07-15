@@ -9,20 +9,32 @@ import User from "../models/userModel.js";
 
 
 const createConversation = asyncHandler(async (req, res) => {
-
-    const senderId = req.user._id
+    const senderId = req.user._id.toString()
     const { recieverId } = req.body
 
     if (!senderId || !recieverId) {
         throw new Error('invalid member Ids')
     }
-    const conversation = await Conversation.create({
-        members: [senderId, recieverId]
+    const result = await Conversation.find({
+        members: {
+            $all: [senderId, recieverId]
+        }
     })
-    res.status(201).json({
-        status: 'success',
-        conversation
-    })
+    if (result.length !== 0) {
+        res.status(200).json({
+            status: 'success',
+            conversation: result[0]
+        })
+    } else {
+        const conversation = await Conversation.create({
+            members: [senderId, recieverId]
+        })
+        res.status(201).json({
+            status: 'success',
+            conversation
+        })
+    }
+
 })
 
 //@desc Get conversations of user
@@ -32,7 +44,7 @@ const createConversation = asyncHandler(async (req, res) => {
 
 const getUserConversations = asyncHandler(async (req, res) => {
 
-    const currUser = req.user._id
+    const currUser = req.user._id.toString()
 
     if (!currUser) {
         throw new Error('invalid senderId')
@@ -42,10 +54,7 @@ const getUserConversations = asyncHandler(async (req, res) => {
             $in: [currUser]
         }
     })
-    res.status(200).json({
-        status: 'success',
-        conversation
-    })
+    res.status(200).json(conversation)
 })
 
 //@desc Get user Chats
