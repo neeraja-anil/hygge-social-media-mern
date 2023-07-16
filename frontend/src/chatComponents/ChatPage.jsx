@@ -33,7 +33,6 @@ const ChatPage = ({ user, chat, socket }) => {
             text: msg
         })
         const res = await addMessage({ conversationId, sender, text: msg }).unwrap()
-        console.log(res)
     }
     useEffect(() => {
         socket.current.on('getMessage', data => {
@@ -49,7 +48,6 @@ const ChatPage = ({ user, chat, socket }) => {
         if (texts) {
             setMessages(texts)
         }
-        console.log('msgs', messages)
     }, [texts])
 
     useEffect(() => {
@@ -59,7 +57,7 @@ const ChatPage = ({ user, chat, socket }) => {
 
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages, arrivalMsg])
+    }, [messages])
 
 
     return (
@@ -128,7 +126,9 @@ const ChatPage = ({ user, chat, socket }) => {
                     </Box>
                     <MessageContainer>
                         {messages?.map(msg => (
-                            <Message message={msg} own={msg.sender === user._id} />
+                            <div ref={scrollRef}>
+                                <Message message={msg} own={msg.sender === user._id} />
+                            </div>
                         ))}
                     </MessageContainer>
                     <Box >

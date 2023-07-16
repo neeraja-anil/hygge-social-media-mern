@@ -65,10 +65,13 @@ io.on("connection", (socket) => {
 
         const reciever = getUser(recieverId)
         console.log('reciever', reciever)
-        io.to(reciever.socketId).emit('getMessage', {
-            senderId,
-            text
-        })
+        if (reciever) {
+            io.to(reciever.socketId).emit('getMessage', {
+                senderId,
+                text
+            })
+        }
+
     })
 
     //user disconnecting

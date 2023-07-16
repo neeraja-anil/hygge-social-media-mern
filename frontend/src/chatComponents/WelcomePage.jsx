@@ -22,10 +22,10 @@ const WelcomePage = ({ user }) => {
                 flexDirection='column'
             >
                 <Box>
-                    <Avatar src={user.picturePath} sx={{ width: isNonMobileScreens ? 100 : 50, height: isNonMobileScreens ? 100 : 50 }} />
+                    <Avatar src={user?.picturePath} sx={{ width: isNonMobileScreens ? 100 : 50, height: isNonMobileScreens ? 100 : 50 }} />
                 </Box>
                 <Box pt='2rem'>
-                    <Typography variant='h2'>Welcome, <font color={theme.palette.primary.dark}>{user.firstName}{user.lastName}</font></Typography>
+                    <Typography variant='h2'>Welcome, <font color={theme.palette.primary.dark}>{user?.firstName}{user?.lastName}</font></Typography>
                 </Box>
                 <Box>
                     <Typography variant='h5' sx={{ color: theme.palette.neutral.medium }}>Please select a chat to start messaging</Typography>

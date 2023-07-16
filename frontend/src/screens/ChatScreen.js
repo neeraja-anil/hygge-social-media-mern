@@ -1,25 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
-import FriendsSideBar from '../chatComponents/FriendsSideBar'
+import ConversationsSideBar from '../chatComponents/ConversationsSideBar'
 import { Box, useMediaQuery } from '@mui/material'
 import WelcomePage from '../chatComponents/WelcomePage'
 import ChatPage from '../chatComponents/ChatPage'
 import { useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
-import { useCreateConversationMutation, useGetConversationQuery } from '../redux/conversationApiSlice'
+import { useNavigate } from 'react-router-dom'
+import UserFriendsSidebar from '../chatComponents/UserFriendsSidebar'
 
 const ChatScreen = () => {
     const [currentChat, setCurrentChat] = useState(null)
     const socket = useRef()
+    const navigate = useNavigate()
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
     const { user } = useSelector(state => state.auth)
-
 
     const handleChangeChat = async (chat) => {
         setCurrentChat(chat)
     }
 
     useEffect(() => {
+        if (!user) {
+            navigate('/')
+        }
         socket.current = io(('http://localhost:5001'))
     }, [])
 
@@ -41,7 +45,10 @@ const ChatScreen = () => {
                 padding='1rem 5%'
             >
                 <Box flexBasis={isNonMobileScreens ? '25%' : '15%'}>
-                    <FriendsSideBar user={user} changeChat={handleChangeChat} />
+                    <ConversationsSideBar user={user} changeChat={handleChangeChat} />
+                    <Box gap='1rem' padding='1rem 0'>
+                        <UserFriendsSidebar user={user} newChat={handleChangeChat} />
+                    </Box>
                 </Box>
                 {!currentChat ? (
                     <Box flexBasis={isNonMobileScreens ? '75%' : '85%'}>
