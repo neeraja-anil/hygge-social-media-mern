@@ -44,7 +44,23 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['User']
         }),
+        editUser: builder.mutation({
+            query: (formData) => ({
+                url: `/api/users/profile/edit`,
+                method: 'PUT',
+                body: formData
+            }),
+            invalidatesTags: ['User']
+        }),
+        changePassword: builder.mutation({
+            query: (data) => ({
+                url: `/api/users/changePassword`,
+                method: 'PATCH',
+                body: data
+            }),
+            invalidatesTags: ['User']
+        }),
     }),
 })
 
-export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation, useGetFriendQuery } = usersApiSlice
+export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation, useGetFriendQuery, useEditUserMutation, useChangePasswordMutation } = usersApiSlice

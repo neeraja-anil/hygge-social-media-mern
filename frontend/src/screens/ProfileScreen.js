@@ -45,7 +45,7 @@ const ProfileScreen = () => {
                         <FlexBetween p='2rem' gap='1rem' sx={{ display: isNonMobileScreens ? 'flex' : 'block' }}>
                             <FlexBetween gap='1rem'>
                                 <Avatar src={userInfo && userInfo.picturePath} sx={{ width: isNonMobileScreens ? 150 : 50, height: isNonMobileScreens ? 150 : 50 }} />
-                                <Typography variant='h4' sx={{ fontWeight: 600 }}>{userInfo && userInfo.firstName} {userInfo && userInfo.lastName}</Typography>
+                                <Typography variant='h3' sx={{ fontWeight: 600 }}>{userInfo && userInfo.firstName} {userInfo && userInfo.lastName}</Typography>
                             </FlexBetween>
 
                             <Box pt='1rem'>
@@ -81,10 +81,10 @@ const ProfileScreen = () => {
                                             </FlexBetween>
                                             <FlexBetween>
                                                 <Button
-                                                    onClick=''
+                                                    disabled
                                                     sx={{
                                                         color: '#ffffff',
-                                                        backgroundColor: theme.palette.primary.main,
+                                                        // backgroundColor: theme.palette.primary.main,
                                                         '&:hover': { backgroundColor: theme.palette.primary.dark }
                                                     }}
                                                 >
@@ -103,7 +103,7 @@ const ProfileScreen = () => {
                                     </FlexBetween>
                                 )}
                                 <FlexBetween pt='1.1rem'>
-                                    About section............
+                                    {userInfo?.desc ? <Typography>{userInfo?.desc}</Typography> : ''}
                                 </FlexBetween>
                             </Box>
                         </FlexBetween>
