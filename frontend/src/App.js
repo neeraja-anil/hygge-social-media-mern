@@ -13,7 +13,6 @@ import VerifyUserRegScreen from './screens/VerifyUserRegScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { CssBaseline } from '@mui/material';
 import ChatScreen from './screens/ChatScreen';
-import ChatPage from './chatComponents/ChatPage';
 
 
 function App() {
@@ -30,6 +29,7 @@ function App() {
           <Route path='/verify' element={<VerifyUserRegScreen />} />
           <Route path='/home' element={<HomeScreen />} />
           <Route path='/profile/:id' element={<ProfileScreen />} />
+          {/* <Route path='/profile/edit/:id' element={<EditProfileScreen />} /> */}
           <Route path='/chat' element={<ChatScreen />} />
         </Routes>
         <ToastContainer />

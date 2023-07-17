@@ -16,6 +16,42 @@ const getUser = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc   Update user by id
+//@route  PUT /api/users/:id
+//@access private
+
+const updateUser = asyncHandler(async (req, res) => {
+
+    const {
+        firstName,
+        lastName,
+        picturePath,
+        cloudinary_id,
+        desc,
+        location,
+        occupation
+    } = req.body
+
+    const user = await User.findById(req.params.id)
+    if (user) {
+        const updatedUser = await User.findOneAndUpdate(user._id, {
+            $set: {
+                firstName,
+                lastName,
+                picturePath,
+                desc,
+                location,
+                occupation
+            }
+        })
+        res.status(201).json({ status: 'success', updatedUser })
+    } else {
+        res.status(404)
+        throw new Error('User not Found')
+    }
+})
+
+
 //@desc   Get user friends by id
 //@route  GET /api/users/:id/friends
 //@access private
@@ -61,4 +97,4 @@ const addRemoveFriend = asyncHandler(async (req, res) => {
     }
 })
 
-export { getUser, getUserFriends, addRemoveFriend }
+export { getUser, getUserFriends, addRemoveFriend, updateUser }

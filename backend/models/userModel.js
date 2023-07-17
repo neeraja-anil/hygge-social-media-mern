@@ -43,6 +43,9 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    desc: {
+        type: String
+    },
     location: String,
     occupation: String,
     viewedProfiles: Number,

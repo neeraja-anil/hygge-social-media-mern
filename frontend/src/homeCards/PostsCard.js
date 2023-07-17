@@ -48,7 +48,6 @@ const PostsCard = ({ post }) => {
     }
     const addCommentHandler = async () => {
         const postId = post._id
-        console.log('cmt', comment)
         const res = await commentPost({ comment, postId }).unwrap()
         console.log(res)
         setComment('')
@@ -141,7 +140,7 @@ const PostsCard = ({ post }) => {
                             </IconButton>
                         </FlexBetween>
                         {post.comments.map(comment => (
-                            <Box padding='0.2rem 0' pt='1.1rem' key={comment.user}>
+                            <Box padding='0.2rem 0' pt='1.1rem' key={comment._id}>
                                 <FlexBetween gap='1rem'>
                                     <Avatar src={comment.picturePath} sx={{ width: 25, height: 25 }} />
 

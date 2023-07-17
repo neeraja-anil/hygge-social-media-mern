@@ -137,7 +137,7 @@ const commentPost = asyncHandler(async (req, res) => {
         }
         post.comments.unshift(comments)
         await post.save()
-        res.status(201).json('comment added')
+        res.status(201).json({ status: 'success', msg: 'commenet added' })
     } else {
         throw new Error('post not found')
     }

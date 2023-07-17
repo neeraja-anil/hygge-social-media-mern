@@ -1,5 +1,6 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import CardWrapper from '.././components/CardWrapper'
 import FlexBetween from '.././components/FlexBetween'
 import { Avatar, Box, Button, Divider, IconButton, Typography, useMediaQuery, useTheme, ImageList, ImageListItem } from '@mui/material'
@@ -9,13 +10,25 @@ import { useGetUserQuery } from '../redux/usersApiSlice'
 import { useUserPostsQuery } from '../redux/postApiSlice'
 
 const ProfileScreen = () => {
+    const [isOwnProfile, setIsOwnProfile] = useState(false)
     const isNonMobileScreens = useMediaQuery('(min-width:768px)')
     const theme = useTheme()
+    const navigate = useNavigate()
     const { id } = useParams()
+    const { user } = useSelector((state) => state.auth)
     const { data: userInfo, error } = useGetUserQuery(id)
     const { data: posts } = useUserPostsQuery(id)
+    console.log(posts)
 
+    useEffect(() => {
+        if (!user) {
+            navigate('/')
 
+        }
+    }, [user, navigate])
+    useEffect(() => {
+        setIsOwnProfile(user._id === id)
+    }, [])
 
     return (
         <Box>
@@ -41,16 +54,30 @@ const ProfileScreen = () => {
                                         <Typography></Typography>
                                         <FlexBetween gap='1rem'>
                                             <FlexBetween>
-                                                <Button
-                                                    onClick=''
-                                                    sx={{
-                                                        color: '#ffffff',
-                                                        backgroundColor: theme.palette.primary.main,
-                                                        '&:hover': { backgroundColor: theme.palette.primary.dark }
-                                                    }}
-                                                >
-                                                    Following
-                                                </Button>
+                                                {isOwnProfile ? (
+                                                    <Button
+                                                        onClick={() => navigate(`/profile/edit/${id}`)}
+                                                        sx={{
+                                                            color: '#ffffff',
+                                                            backgroundColor: theme.palette.primary.main,
+                                                            '&:hover': { backgroundColor: theme.palette.primary.dark }
+                                                        }}
+                                                    >
+                                                        Edit Profile
+                                                    </Button>
+                                                ) : (
+                                                    <Button
+                                                        // onClick={}
+                                                        sx={{
+                                                            color: '#ffffff',
+                                                            backgroundColor: theme.palette.primary.main,
+                                                            '&:hover': { backgroundColor: theme.palette.primary.dark }
+                                                        }}
+                                                    >
+                                                        Following
+                                                    </Button>
+                                                )}
+
                                             </FlexBetween>
                                             <FlexBetween>
                                                 <Button
@@ -100,7 +127,7 @@ const ProfileScreen = () => {
                         <Divider />
                         <ImageList cols={isNonMobileScreens ? 4 : 3} sx={{ '&:-webkit-scrollbar': { display: 'none' } }}>
                             {posts && posts.map((item) => (
-                                <ImageListItem key={item.img}>
+                                <ImageListItem key={item._id}>
                                     <img
                                         src={item.postPath}
                                         alt='image'
@@ -113,10 +140,10 @@ const ProfileScreen = () => {
 
 
                     </CardWrapper>
-                </Box>
-            </Box>
+                </Box >
+            </Box >
 
-        </Box>
+        </Box >
 
     )
 }
