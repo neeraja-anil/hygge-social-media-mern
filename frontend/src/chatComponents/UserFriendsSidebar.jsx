@@ -24,7 +24,7 @@ const UserFriendsSidebar = ({ user, newChat }) => {
     return (
         <>
             {isNonMobileScreens ? (
-                <MessageContainer sx={{ padding: '0.5rem', backgroundColor: theme.palette.background.alt, maxHeight: '40vh' }}>
+                <MessageContainer sx={{ padding: '0.5rem', backgroundColor: theme.palette.background.alt, height: 'fit-content', maxHeight: '40vh' }}>
                     <Typography variant='h4'>Friends</Typography >
                     {
                         friends?.map(f => (
@@ -54,7 +54,7 @@ const UserFriendsSidebar = ({ user, newChat }) => {
                     }
                 </MessageContainer >
             ) : (
-                <MessageContainer sx={{ padding: '0.5rem', backgroundColor: theme.palette.background.alt, maxHeight: '40vh' }}>
+                <MessageContainer sx={{ padding: '0.5rem', backgroundColor: theme.palette.background.alt, height: 'fit-content', maxHeight: '40vh' }}>
                     <Typography variant='h6'>Friends</Typography>
                     {friends.map(f => (
                         <Box backgroundColor={theme.palette.primary.light}

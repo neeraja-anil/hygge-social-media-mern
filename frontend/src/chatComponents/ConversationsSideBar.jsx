@@ -29,7 +29,7 @@ const ConversationsSideBar = ({ user, changeChat }) => {
 
     return (
         <>
-            <MessageContainer sx={{ padding: '0.5rem', backgroundColor: theme.palette.background.alt, maxHeight: '30vh' }} >
+            <MessageContainer sx={{ padding: '0.5rem', backgroundColor: theme.palette.background.alt, height: 'fit-content', maxHeight: '30vh' }} >
                 <Typography variant={isNonMobileScreens ? 'h4' : 'h6'}>Chats</Typography >
                 {
                     conversations?.map(convo => (
