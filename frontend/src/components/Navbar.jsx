@@ -9,6 +9,7 @@ import { setLogout } from '../redux/authSlice'
 
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false)
+    const [keyWord, setKeyWord] = useState()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
@@ -23,6 +24,13 @@ const Navbar = () => {
     const { user } = useSelector((state) => state.auth)
     const fullName = user ? `${user.firstName} ${user.lastName}` : ''
 
+    const handleSearch = () => {
+        if (keyWord?.trim()) {
+            navigate(`/search/${keyWord}`)
+        } else {
+            return null
+        }
+    }
     return (
         <FlexBetween padding='1rem 6%' backgroundColor={alt} sx={{ position: "sticky", top: 0, zIndex: 1000 }}>
             <FlexBetween gap='1.75rem'>
@@ -43,8 +51,8 @@ const Navbar = () => {
                 </Typography>
                 {isNonMobileScreens && (
                     <FlexBetween gap='3rem' backgroundColor={neutralLight} borderRadius='9px' padding='0.1rem 1.5rem'>
-                        <InputBase placeholder='Search...' />
-                        <IconButton>
+                        <InputBase placeholder='Search...' onChange={(e) => setKeyWord(e.target.value)} />
+                        <IconButton onClick={handleSearch}>
                             <Search />
                         </IconButton>
                     </FlexBetween>

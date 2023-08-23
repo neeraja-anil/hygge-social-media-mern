@@ -39,6 +39,8 @@ const EditProfileComponent = () => {
         try {
             const res = await editUser(formData).unwrap()
             console.log(res)
+            toast.success('Updated profile successfully')
+            navigate(`/profile/${userId}`)
         } catch (err) {
             toast.error(err?.data?.message || err.error)
         }

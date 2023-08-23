@@ -5,12 +5,16 @@ import FlexBetween from '../components/FlexBetween'
 import { LockOutlined } from '@mui/icons-material'
 import { useChangePasswordMutation, useEditUserMutation } from '../redux/usersApiSlice'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 
 const ChangePasswordComponent = () => {
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+
+    const { user } = useSelector((state) => state.auth)
+    const userId = user._id
     const navigate = useNavigate()
     const [changePassword, { isLoading }] = useChangePasswordMutation()
 
@@ -26,6 +30,8 @@ const ChangePasswordComponent = () => {
                     setConfirmPassword('')
                 }
                 console.log(res.data.status)
+                toast.success('Password updated successfully')
+                navigate(`/profile/${userId}`)
             } catch (err) {
                 toast.error(err)
             }

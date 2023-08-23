@@ -20,6 +20,16 @@ const getUser = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc   Get all users 
+//@route  GET /api/users/
+//@access private
+
+const getAllUsers = asyncHandler(async (req, res) => {
+
+    const users = await User.find().select('-password')
+    res.status(200).json(users)
+})
+
 //@desc   Update user profile
 //@route  PUT /api/users/profile/edit
 //@access private
@@ -148,4 +158,4 @@ const addRemoveFriend = asyncHandler(async (req, res) => {
     }
 })
 
-export { getUser, getUserFriends, addRemoveFriend, updateUser, updatePassword }
+export { getUser, getAllUsers, getUserFriends, addRemoveFriend, updateUser, updatePassword }

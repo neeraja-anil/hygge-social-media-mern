@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 
 const FriendsCard = () => {
     const { user } = useSelector(state => state.auth)
-    const { data: friends, isLoading, isError } = useGetFriendQuery(user._id)
+    const { data: friends, isLoading, isError } = useGetFriendQuery(user?._id || '')
     const [addRemoveFriend] = useAddRemoveFriendMutation()
     const theme = useTheme()
     const navigate = useNavigate()

@@ -18,7 +18,6 @@ const ProfileScreen = () => {
     const { user } = useSelector((state) => state.auth)
     const { data: userInfo, error } = useGetUserQuery(id)
     const { data: posts } = useUserPostsQuery(id)
-    console.log(posts)
 
     useEffect(() => {
         if (!user) {

@@ -29,7 +29,7 @@ const PostsCard = ({ post }) => {
     const primaryLight = theme.palette.primary.light
 
     // REDUX APIS
-    const { data: userInfo, error } = useGetUserQuery(user._id)
+    const { data: userInfo, error } = useGetUserQuery(user?._id || '')
     const [addRemoveFriend] = useAddRemoveFriendMutation()
     const [likePost, { isLoading }] = useLikePostMutation()
     const [commentPost] = useCommentPostMutation()
@@ -77,7 +77,7 @@ const PostsCard = ({ post }) => {
                                 cursor: 'pointer'
                             }
                         }}>
-                            {user.friends.includes(post.user) ? <PersonRemove /> : <PersonAddAlt />}
+                            {user?.friends.includes(post.user) ? <PersonRemove /> : <PersonAddAlt />}
                         </IconButton>
                     </FlexBetween>
                 </FlexBetween>
@@ -108,7 +108,7 @@ const PostsCard = ({ post }) => {
                     <FlexBetween gap='2rem'>
                         <FlexBetween>
                             <IconButton onClick={postLikeHandler}>
-                                {post.likes.includes(user._id) ? <Favorite sx={{ color: '#991818' }} /> : <FavoriteBorder />}
+                                {post.likes.includes(user?._id) ? <Favorite sx={{ color: '#991818' }} /> : <FavoriteBorder />}
                             </IconButton>
                             <Typography>Like</Typography>
                         </FlexBetween>

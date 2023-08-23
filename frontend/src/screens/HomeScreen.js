@@ -15,7 +15,7 @@ const HomeScreen = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
-    const { data: userInfo } = useGetUserQuery(user._id)
+    const { data: userInfo } = useGetUserQuery(user?._id || '')
 
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
 
