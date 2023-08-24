@@ -46,6 +46,14 @@ const userSchema = new mongoose.Schema({
     desc: {
         type: String
     },
+    unseenNotifications: [{
+        message: String,
+        postPath: String,
+    }],
+    seenNotifications: [{
+        message: String,
+        postPath: String,
+    }],
     location: String,
     occupation: String,
     viewedProfiles: Number,

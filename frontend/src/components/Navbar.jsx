@@ -71,7 +71,9 @@ const Navbar = () => {
                     <IconButton onClick={() => navigate('/chat')}>
                         <Message sx={{ fontSize: '25px', color: neutralDark }} />
                     </IconButton>
-                    <Notifications sx={{ fontSize: '25px', color: neutralDark }} />
+                    <IconButton >
+                        <Notifications sx={{ fontSize: '25px', color: neutralDark }} />
+                    </IconButton>
                     <Help sx={{ fontSize: '25px', color: neutralDark }} />
                     <FormControl variant='standard' value={fullName}>
                         <Select

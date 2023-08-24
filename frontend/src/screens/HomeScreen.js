@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useGetUserQuery } from '../redux/usersApiSlice';
@@ -10,8 +10,11 @@ import CreatePostCard from '../homeCards/CreatePostCard';
 import PostFeed from '../homeCards/PostFeed';
 import FriendsCard from '../homeCards/FriendsCard';
 import AdsCard from '../homeCards/AdsCard';
+import { io } from 'socket.io-client'
+
 
 const HomeScreen = () => {
+    const socket = useRef()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
@@ -26,6 +29,25 @@ const HomeScreen = () => {
             userInfo && dispatch(setUser(userInfo))
         }
     }, [user, userInfo, navigate, dispatch])
+
+    // NOTIFICATION 
+    useEffect(() => {
+        if (!user) {
+            navigate('/')
+        }
+        socket.current = io(('http://localhost:5001'))
+    }, [])
+
+    useEffect(() => {
+        socket?.current.emit('addUser', user?._id)
+        socket?.current.on('getUsers', users => {
+            console.log(users)
+        })
+        //Clean up the socket connection when the component unmounts 
+        return () => {
+            socket?.current.disconnect();
+        };
+    }, [user])
 
     return (
         <Box>

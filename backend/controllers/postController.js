@@ -109,6 +109,19 @@ const likePost = asyncHandler(async (req, res) => {
     if (post) {
         if (!post.likes.includes(req.user._id)) {
             await post.updateOne({ $push: { likes: req.user._id } })
+
+            // NOTIFICATION
+            const [likedUser, postOwner] = await Promise.all([
+                User.findById(req.user._id),
+                User.findById(post.user),
+            ]);
+            const unseenNotifications = {
+                message: `${likedUser.firstName} liked your post`,
+                postPath: `/post/${post._id}`
+            }
+            postOwner.unseenNotifications.push(unseenNotifications)
+            await postOwner.save()
+
             res.status(200).json('you liked this post')
         } else {
             await post.updateOne({ $pull: { likes: req.user._id } })
@@ -137,6 +150,19 @@ const commentPost = asyncHandler(async (req, res) => {
         }
         post.comments.unshift(comments)
         await post.save()
+
+        // NOTIFICATION
+        const [CommentedUser, postOwner] = await Promise.all([
+            User.findById(req.user._id),
+            User.findById(post.user),
+        ]);
+        const unseenNotifications = {
+            message: `${CommentedUser.firstName} commented on your post`,
+            postPath: `/post/${post._id}`
+        }
+        postOwner.unseenNotifications.push(unseenNotifications)
+        await postOwner.save()
+
         res.status(201).json({ status: 'success', msg: 'commenet added' })
     } else {
         throw new Error('post not found')

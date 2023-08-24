@@ -32,7 +32,12 @@ const ChatScreen = () => {
         socket?.current.on('getUsers', users => {
             console.log(users)
         })
+        //Clean up the socket connection when the component unmounts
+        return () => {
+            socket?.current.disconnect();
+        };
     }, [user])
+
     return (
         <>
             <Navbar />
