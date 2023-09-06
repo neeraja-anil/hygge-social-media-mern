@@ -158,4 +158,48 @@ const addRemoveFriend = asyncHandler(async (req, res) => {
     }
 })
 
-export { getUser, getAllUsers, getUserFriends, addRemoveFriend, updateUser, updatePassword }
+//@desc   Get unseen notifications
+//@route  GET /api/users/:userId/notifications/unseen
+//@access private
+const getUnseenNotifications = asyncHandler(async (req, res) => {
+    const result = await User.findById(req.params.id, { unseenNotifications: 1 })
+    res.status(200).json(result)
+})
+
+//@desc   Get seen notifications
+//@route  GET /api/users/:userId/notifications/seen
+//@access private
+const getSeenNotifications = asyncHandler(async (req, res) => {
+    const result = await User.findById(req.params.id, { seenNotifications: 1 })
+    res.status(200).json(result)
+})
+
+//@desc   Mark unseen notifications as seen
+//@route  GET /api/users/:userId/notifications/:id
+//@access private
+const markAsRead = asyncHandler(async (req, res) => {
+    const userId = req.params.id
+    const notificationId = req.params.notificationId
+    const user = await User.findOne({ 'unseenNotifications._id': req.params.notificationId }, {
+        'unseenNotifications.$': 1,
+        seenNotifications: 1
+    })
+    console.log(user)
+    user.seenNotifications.push(user.unseenNotifications[0])
+    await user.save()
+
+    const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        {
+            $pull: {
+                unseenNotifications: {
+                    _id: notificationId
+                }
+            }
+        },
+        { new: true }
+    );
+    res.status(200).json(updatedUser)
+})
+
+export { getUser, getAllUsers, getUserFriends, addRemoveFriend, updateUser, updatePassword, getUnseenNotifications, getSeenNotifications, markAsRead }
