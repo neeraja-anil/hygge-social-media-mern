@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Box, Typography, useMediaQuery, FormControl, useTheme, InputBase, IconButton, Select, MenuItem, Icon } from '@mui/material'
-import { Search, DarkMode, Light, Message, Notifications, Help, Menu, Close, LightMode } from '@mui/icons-material'
+import { Box, Typography, useMediaQuery, FormControl, useTheme, InputBase, IconButton, Select, MenuItem, Menu } from '@mui/material'
+import { Search, DarkMode, Light, Message, Notifications, Help, Close, LightMode } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setMode } from '../redux/modeSlice'
 import FlexBetween from './FlexBetween'
 import { setLogout } from '../redux/authSlice'
+import NotificationMenu from './NotificationMenu'
 
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false)
@@ -31,6 +32,13 @@ const Navbar = () => {
             return null
         }
     }
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleClick = e => {
+        setAnchorEl(e.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     return (
         <FlexBetween padding='1rem 6%' backgroundColor={alt} sx={{ position: "sticky", top: 0, zIndex: 1000 }}>
             <FlexBetween gap='1.75rem'>
@@ -71,7 +79,13 @@ const Navbar = () => {
                     <IconButton onClick={() => navigate('/chat')}>
                         <Message sx={{ fontSize: '25px', color: neutralDark }} />
                     </IconButton>
-                    <IconButton >
+                    <IconButton
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                        aria-label="Notifications"
+                        title="Notifications"
+                    >
                         <Notifications sx={{ fontSize: '25px', color: neutralDark }} />
                     </IconButton>
                     <Help sx={{ fontSize: '25px', color: neutralDark }} />
@@ -170,6 +184,15 @@ const Navbar = () => {
                 </Box>
             )}
 
+            {/* NOTIFICATION MENU */}
+            <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <NotificationMenu />
+            </Menu>
         </FlexBetween >
     )
 }

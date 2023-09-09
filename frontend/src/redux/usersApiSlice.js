@@ -61,8 +61,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['User']
         }),
         unseenNotifications: builder.query({
-            query: () => ({
+            query: (userId) => ({
                 url: `/api/users/${userId}/notifications/unseen`,
+                method: 'GET'
+            }),
+            invalidatesTags: ['User']
+        }),
+        seenNotifications: builder.query({
+            query: (userId) => ({
+                url: `/api/users/${userId}/notifications/seen`,
+                method: 'GET'
+            }),
+            invalidatesTags: ['User']
+        }),
+        markAsRead: builder.mutation({
+            query: ({ userId, notificationId }) => ({
+                url: `/api/users/${userId}/notifications/${notificationId}`,
                 method: 'GET'
             }),
             invalidatesTags: ['User']
@@ -70,4 +84,4 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
 })
 
-export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation, useGetFriendQuery, useEditUserMutation, useChangePasswordMutation, useUnseenNotificationsQuery } = usersApiSlice
+export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation, useGetFriendQuery, useEditUserMutation, useChangePasswordMutation, useUnseenNotificationsQuery, useSeenNotificationsQuery, useMarkAsReadMutation } = usersApiSlice
