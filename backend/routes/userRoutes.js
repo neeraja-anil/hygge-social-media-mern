@@ -11,7 +11,7 @@ router.route('/:id').get(protect, getUser)
 router.route('/:id/friends').get(protect, getUserFriends)
 router.route('/:id/notifications/unseen').get(protect, getUnseenNotifications)
 router.route('/:id/notifications/seen').get(protect, getSeenNotifications)
-router.route('/:id/notifications/:notificationId').get(protect, markAsRead)
+router.route('/:id/notifications/:notificationId').patch(protect, markAsRead)
 
 //UPDATE
 router.route('/profile/edit').put(protect, upload.single('avatar'), updateUser)

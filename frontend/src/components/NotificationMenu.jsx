@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import CardWrapper from '../components/CardWrapper'
-import { useUnseenNotificationsQuery, useSeenNotificationsQuery, useMarkAsReadMutation } from '../redux/usersApiSlice'
+import { useUnseenNotificationsQuery, useSeenNotificationsQuery, useMarkAsReadMutation } from '../redux/notificationApiSlice'
 import { Avatar, Box, CircularProgress, IconButton, Typography, useTheme, Tab } from '@mui/material'
 import { TabContext, TabPanel, TabList } from '@mui/lab'
 import { useSelector } from 'react-redux'
@@ -15,10 +15,17 @@ const NotificationMenu = () => {
     };
 
     const { user } = useSelector(state => state.auth)
+    const userId = user?._id
     const { data: unseen, isLoading, isError } = useUnseenNotificationsQuery(user?._id || '')
     const { data: seen, isLoadingSeen, isErrorSeen } = useSeenNotificationsQuery(user?._id || '')
     const theme = useTheme()
     const navigate = useNavigate()
+    const [markAsRead] = useMarkAsReadMutation()
+
+    const markNotification = async (notificationId, postPath) => {
+        const res = await markAsRead({ userId, notificationId })
+        //navigate(`${postPath}`)
+    }
 
     return (
         <>
@@ -55,7 +62,7 @@ const NotificationMenu = () => {
                                     unseen?.unseenNotifications.map(unseen => (
                                         <Box pt='1.1rem' key={unseen._id}>
                                             <FlexBetween gap='1rem' pb='0.1rem'>
-                                                <FlexBetween gap='1rem' onClick={() => navigate(`${unseen.postPath}`)} sx={{ '&:hover': { cursor: 'pointer' } }}>
+                                                <FlexBetween gap='1rem' onClick={() => markNotification(unseen._id, unseen.postPath)} sx={{ '&:hover': { cursor: 'pointer' } }}>
                                                     <Avatar />
                                                     <Box>
                                                         <Typography>{unseen.message}</Typography>

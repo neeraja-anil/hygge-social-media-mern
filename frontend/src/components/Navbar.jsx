@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Typography, useMediaQuery, FormControl, useTheme, InputBase, IconButton, Select, MenuItem, Menu } from '@mui/material'
-import { Search, DarkMode, Light, Message, Notifications, Help, Close, LightMode } from '@mui/icons-material'
+import { Search, DarkMode, Light, Message, Notifications, Help, Close, LightMode, MenuOutlined } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setMode } from '../redux/modeSlice'
@@ -119,7 +119,7 @@ const Navbar = () => {
                 <IconButton
                     onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
                 >
-                    <Menu />
+                    <MenuOutlined />
                 </IconButton>
             )}
 
@@ -153,7 +153,15 @@ const Navbar = () => {
                         <IconButton onClick={() => navigate('/chat')}>
                             <Message sx={{ fontSize: '25px', color: neutralDark }} />
                         </IconButton>
-                        <Notifications sx={{ fontSize: '25px', color: neutralDark }} />
+                        <IconButton
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            onClick={handleClick}
+                            aria-label="Notifications"
+                            title="Notifications"
+                        >
+                            <Notifications sx={{ fontSize: '25px', color: neutralDark }} />
+                        </IconButton>
                         <Help sx={{ fontSize: '25px', color: neutralDark }} />
                         <FormControl variant='standard' value={fullName}>
                             <Select

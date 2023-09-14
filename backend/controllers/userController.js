@@ -175,7 +175,7 @@ const getSeenNotifications = asyncHandler(async (req, res) => {
 })
 
 //@desc   Mark unseen notifications as seen
-//@route  GET /api/users/:userId/notifications/:id
+//@route  PATCH /api/users/:userId/notifications/:id
 //@access private
 const markAsRead = asyncHandler(async (req, res) => {
     const userId = req.params.id

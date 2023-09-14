@@ -77,11 +77,11 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         markAsRead: builder.mutation({
             query: ({ userId, notificationId }) => ({
                 url: `/api/users/${userId}/notifications/${notificationId}`,
-                method: 'GET'
+                method: 'PATCH'
             }),
-            invalidatesTags: ['User']
+            providesTags: ['User']
         }),
     }),
 })
 
-export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation, useGetFriendQuery, useEditUserMutation, useChangePasswordMutation, useUnseenNotificationsQuery, useSeenNotificationsQuery, useMarkAsReadMutation } = usersApiSlice
+export const { useLoginMutation, useRegistrationMutation, useVerifyRegistrationMutation, useGetUserQuery, useAddRemoveFriendMutation, useGetFriendQuery, useEditUserMutation, useChangePasswordMutation } = usersApiSlice

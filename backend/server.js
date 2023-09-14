@@ -73,6 +73,14 @@ io.on("connection", (socket) => {
 
     })
 
+    // //NOTIFICATIONS 
+    // socket.on('getNotificationsLength', async (userId) => {
+    //     const notifications = await notification
+    //       .find({ user: userId, read: false })
+    //       .lean();
+    //     users[userId]?.emit('notificationsLength', notifications.length || 0);
+    //   });
+
     //user disconnecting
     socket.on('disconnect', () => {
         console.log('a user disconnected ')
