@@ -41,4 +41,28 @@ const getMessages = asyncHandler(async (req, res) => {
     res.status(200).json(messages)
 })
 
-export { addMessage, getMessages }
+//@desc clear coversation
+//@route DELETE /api/messages/delete/:conversationId
+//@access private
+
+const deleteAllMessages = asyncHandler(async (req, res) => {
+
+    const senderId = req.user._id
+    const { conversationId } = req.params
+
+    if (!senderId) {
+        throw new Error('invalid sender Id')
+    }
+    try {
+        const messages = await Message.find({ conversationId })
+        for (const message of messages) {
+            await message.deleteOne()
+        }
+        res.json({ message: 'messages cleared' })
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+export { addMessage, getMessages, deleteAllMessages }

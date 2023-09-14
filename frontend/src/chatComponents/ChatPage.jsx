@@ -4,21 +4,23 @@ import FlexBetween from '../components/FlexBetween'
 import ChatInput from './ChatInput'
 import MessageContainer from './MessageContainer'
 import Message from './Message'
-import { Avatar, Box, Divider, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Avatar, Box, Divider, IconButton, Menu, MenuItem, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { ErrorOutline, SendOutlined } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useGetUserQuery } from '../redux/usersApiSlice'
-import { useAddMessageMutation, useGetMessageQuery } from '../redux/messageApiSlice'
+import { useAddMessageMutation, useGetMessageQuery, useClearChatMutation } from '../redux/messageApiSlice'
 
 const ChatPage = ({ user, chat, socket }) => {
     const [messages, setMessages] = useState([])
     const [arrivalMsg, setArrivalMsg] = useState(null)
+    const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate()
     const theme = useTheme()
     const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
     const scrollRef = useRef()
     const [addMessage] = useAddMessageMutation()
+    const [clearChat] = useClearChatMutation()
     const conversationId = chat._id
     const sender = user._id
     const friendId = chat?.members?.find(friend => friend !== user._id)
@@ -34,6 +36,18 @@ const ChatPage = ({ user, chat, socket }) => {
         })
         const res = await addMessage({ conversationId, sender, text: msg }).unwrap()
     }
+
+    const handleClick = e => {
+        setAnchorEl(e.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleClearChat = async () => {
+        const res = await clearChat(conversationId).unwrap()
+    }
+
     useEffect(() => {
         socket.current.on('getMessage', data => {
             setArrivalMsg({
@@ -81,7 +95,7 @@ const ChatPage = ({ user, chat, socket }) => {
                                     <Typography sx={{ fontWeight: 'bold' }}>{friend?.firstName} {friend?.lastName}</Typography>
                                 </FlexBetween>
                                 <FlexBetween>
-                                    <IconButton>
+                                    <IconButton onClick={handleClick}>
                                         <ErrorOutline />
                                     </IconButton>
                                 </FlexBetween>
@@ -117,7 +131,7 @@ const ChatPage = ({ user, chat, socket }) => {
                                 <Typography sx={{ fontWeight: 'bold' }}>{friend.firstName} {friend.lastName}</Typography>
                             </FlexBetween>
                             <FlexBetween>
-                                <IconButton>
+                                <IconButton onClick={handleClick}>
                                     <ErrorOutline />
                                 </IconButton>
                             </FlexBetween>
@@ -136,7 +150,15 @@ const ChatPage = ({ user, chat, socket }) => {
                     </Box>
                 </Box >
             )}
-
+            {/* NOTIFICATION MENU */}
+            <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={handleClearChat}>Clear Chat</MenuItem>
+            </Menu>
         </>
     )
 }

@@ -17,7 +17,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Messages']
         }),
+        clearChat: builder.mutation({
+            query: (conversationId) => ({
+                url: `/api/messages/delete/${conversationId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Messages']
+        }),
     }),
 })
 
-export const { useAddMessageMutation, useGetMessageQuery } = usersApiSlice
+export const { useAddMessageMutation, useGetMessageQuery, useClearChatMutation } = usersApiSlice
