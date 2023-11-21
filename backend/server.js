@@ -32,7 +32,7 @@ app.use(cors());
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://hygge-inhy.onrender.com",
   },
 });
 let users = [];
