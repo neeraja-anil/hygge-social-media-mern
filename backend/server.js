@@ -30,9 +30,20 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+const allowedOrigins = [
+  "http://localhost:5001",
+  "http://localhost:3000",
+  "https://hygge-inhy.onrender.com",
+];
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
+
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://hygge-inhy.onrender.com",
+    origin: allowedOrigins,
   },
 });
 let users = [];
