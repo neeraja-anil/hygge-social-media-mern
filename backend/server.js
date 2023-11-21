@@ -35,11 +35,6 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://hygge-inhy.onrender.com",
 ];
-app.use(
-  cors({
-    origin: allowedOrigins,
-  })
-);
 
 const io = new Server(httpServer, {
   cors: {
